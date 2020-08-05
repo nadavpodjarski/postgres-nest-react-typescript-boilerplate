@@ -12,7 +12,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 app.get('/api/start', (req, res) => {
-  res.json({ msg: 'Start building your Express-React application' });
+  res.json({ msg: 'Start building your Express-React Application' });
 });
 
 if (process.env.NODE_ENV === 'production') {

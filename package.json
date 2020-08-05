@@ -6,7 +6,7 @@
     "node": ">= 12.13 < 13"
   },
   "devDependencies": {
-    "@types/node": "~12.12.38",
+    "@types/node": "^12.12.53",
     "prettier": "~2.0.5",
     "tsutils": "~3.17.0",
     "typescript": "~3.8.3"
