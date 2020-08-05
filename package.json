@@ -12,14 +12,13 @@
     "typescript": "~3.8.3"
   },
   "scripts": {
+    "setup": "./setup.sh",
     "start": "npm run build && node build/index.js",
-    "node-build": "tsc -p tsconfig.release.json",
-    "node-build:watch": "tsc -w -p tsconfig.release.json",
-    "react-build": "cd src/client && npm run build",
-    "build": "npm run react-build && npm run node-build",
+    "build": "./build.sh",
     "test": "jest --coverage",
     "test:watch": "jest --watch",
-    "dev": " concurrently \"nodemon\" \"cd src/client && npm start\" "
+    "react-start": "cd src/client && npm start",
+    "dev": " concurrently \"nodemon\" \"npm run react-start\" "
   },
   "author": "Nadav Podjarski",
   "dependencies": {
