@@ -10,11 +10,11 @@ installing Express
 '
 npm install
 echo '
-##################
+########################################################################
 
-installing Nodemon
+installing Nodemon - Type your password to procceed the installation 
 
-##################
+########################################################################
 '
 sudo npm install -g nodemon
 cd src/client

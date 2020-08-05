@@ -12,6 +12,7 @@
     "typescript": "~3.8.3"
   },
   "scripts": {
+    "start": "npm run build && node build/index.js",
     "node-build": "tsc -p tsconfig.release.json",
     "node-build:watch": "tsc -w -p tsconfig.release.json",
     "react-build": "cd src/client && npm run build",
