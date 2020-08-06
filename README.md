@@ -6,8 +6,7 @@ This is an express and react starter repo built with create-react-app and expres
 
 ## Folder structure
 
-Source code for Server and Client placed at src directory. **server** folder is for web services and **client** folder is for UI source codes in development mode. For production mode, client is bundled and set in to client directory under `build` folder and the server is bundled and set in to root directory under `build` folder.
-Keep in mind that the server entry point is `<PROJECT-ROOT>/build/index.js` and it is set to serve static files from the client build folder `<PROJECT-ROOT>/src/client/build/`.
+Source code for Server and Client placed at root directory. **server** folder is for web services and **client** folder is for UI source codes in development mode. For production mode, client is bundled and set in to client directory under the `build` folder, and the server is bundled and set in to server directory under the `build` folder.
 
 ## Getting Started
 
@@ -22,10 +21,10 @@ git clone https://github.com/nadavpodjarski/express-react-typescript-boilerplate
 
 ### Installing
 
-To setup, go to the root directory of this project and run the following command,
+To setup, go to the project's root folder and run the following command,
 
 ```
-npm run setup
+./setup.sh
 ```
 
 This will install all dependencies for server and client and will create a .env file in the root directory
@@ -33,13 +32,15 @@ This will install all dependencies for server and client and will create a .env 
 
 ### Development
 
-To start development mode run the following command
+To start development mode, go to the project's root folder and run the following commands
 
 ```
+cd server
+
 npm run dev
 ```
 
-This will start node express with nodemon and in parallel will start react development server.
+This will start node express with nodemon and in parallel it will start react development server.
 Any code changes in server or client directories will be reflected after saving.
 </br>
 
@@ -48,13 +49,9 @@ Any code changes in server or client directories will be reflected after saving.
 To build, go to the root directory of this project and run the following command
 
 ```
-npm run build
+./build.sh
 ```
 
-Can also go with simple **build and run** with the following command
+Keep in mind that the server entry point is `<PROJECT-ROOT>/server/build/index.js` and it is set to serve static files from the client build folder `<PROJECT-ROOT>/client/build/`.
 
-```
-npm run start
-```
-
-This will run build and node `<PROJECT-ROOT>/build/index.js`
+### Enjoy

@@ -1,9 +1,9 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "rootDir": "./src/server",
+    "rootDir": ".",
     "outDir": "build",
     "removeComments": true
   },
-  "exclude": ["src/client"]
+  "exclude": []
 }
