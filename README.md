@@ -57,4 +57,4 @@ Can also go with simple **build and run** with the following command
 npm run start
 ```
 
-This will run build and node <ROOT-PROJECT>/build/index.js
+This will run build and node `<ROOT-PROJECT>/build/index.js`
