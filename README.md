@@ -1,6 +1,4 @@
-# Project Title
-
-Express.js React.js Typescript boilerplate
+# Express.js React.js Typescript boilerplate
 
 ## Description
 
