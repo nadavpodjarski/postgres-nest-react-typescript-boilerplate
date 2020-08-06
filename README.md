@@ -49,7 +49,7 @@ Any code changes in server or client directories will be reflected after saving.
 To build, go to the root directory of this project and run the following command
 
 ```
-./build
+./build.sh
 ```
 
 Keep in mind that the server entry point is `<PROJECT-ROOT>/server/build/index.js` and it is set to serve static files from the client build folder `<PROJECT-ROOT>/client/build/`.
