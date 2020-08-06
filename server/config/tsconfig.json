@@ -7,7 +7,7 @@
     "allowSyntheticDefaultImports": true,
     "importHelpers": true,
     "module": "commonjs",
-    "outDir": "build",
+    "outDir": "../build",
     "removeComments": true,
     "sourceMap": true,
     "strict": true,
@@ -16,5 +16,5 @@
     "types": ["node"],
     "typeRoots": ["node_modules/@types"]
   },
-  "exclude": []
+  "exclude": ["."]
 }

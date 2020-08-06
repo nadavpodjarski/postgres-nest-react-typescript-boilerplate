@@ -5,10 +5,11 @@
 cd server
 rm -rf build node_modules
 npm install
+cd config 
 tsc -p tsconfig.release.json
 
 # CLIENT BUILD
-cd ../client
+cd ../../client
 rm -rf build node_modules
 npm install
 npm run build

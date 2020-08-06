@@ -27,7 +27,7 @@ To setup, go to the project's root folder and run the following command,
 ./setup.sh
 ```
 
-This will install all dependencies for server and client and will create a .env file in the root directory
+This will install all dependencies and will create .env file for server and client  
 </br>
 
 ### Development
