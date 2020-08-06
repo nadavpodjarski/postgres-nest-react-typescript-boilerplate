@@ -1,6 +1,6 @@
 #!/bin/bash
 
-touch .env
+
 echo '
 ##################
 
@@ -8,6 +8,8 @@ installing Express
 
 ##################
 '
+cd server
+touch .env
 npm install
 echo '
 ########################################################################
@@ -17,7 +19,8 @@ installing Nodemon - Type your password to procceed the installation
 ########################################################################
 '
 sudo npm install -g nodemon
-cd src/client
+cd ../client
+touch .env
 echo '
 ##############################
 

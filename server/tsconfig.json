@@ -16,5 +16,5 @@
     "types": ["node"],
     "typeRoots": ["node_modules/@types"]
   },
-  "exclude": ["src/client"]
+  "exclude": []
 }
