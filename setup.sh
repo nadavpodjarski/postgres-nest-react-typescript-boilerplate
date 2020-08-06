@@ -2,11 +2,11 @@
 
 
 echo '
-##################
+#################################
 
-installing Express
+installing Express dependecies
 
-##################
+#################################
 '
 cd server
 touch .env
