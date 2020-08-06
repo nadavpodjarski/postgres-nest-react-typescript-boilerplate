@@ -28,7 +28,7 @@ To setup, go to the root directory of this project and run the following command
 npm run setup
 ```
 
-This is will install all dependencies for server and client and will create a .env file in the root directory
+This will install all dependencies for server and client and will create a .env file in the root directory
 </br>
 
 ### Development
@@ -56,3 +56,5 @@ Can also go with simple **build and run** with the following command
 ```
 npm run start
 ```
+
+This will run build and node <ROOT-PROJECT>/build/index.js
