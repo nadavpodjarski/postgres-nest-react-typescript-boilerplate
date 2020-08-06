@@ -7,7 +7,6 @@ This is an express and react starter repo built with create-react-app and expres
 ## Folder structure
 
 Source code for Server and Client placed at root directory. **server** folder is for web services and **client** folder is for UI source codes in development mode. For production mode, client is bundled and set in to client directory under the `build` folder, and the server is bundled and set in to server directory under the `build` folder.
-Keep in mind that the server entry point is `<PROJECT-ROOT>/server/build/index.js` and it is set to serve static files from the client build folder `<PROJECT-ROOT>/client/build/`.
 
 ## Getting Started
 
@@ -52,5 +51,7 @@ To build, go to the root directory of this project and run the following command
 ```
 ./build
 ```
+
+Keep in mind that the server entry point is `<PROJECT-ROOT>/server/build/index.js` and it is set to serve static files from the client build folder `<PROJECT-ROOT>/client/build/`.
 
 ### Enjoy
