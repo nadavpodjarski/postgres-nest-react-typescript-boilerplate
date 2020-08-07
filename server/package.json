@@ -14,6 +14,7 @@
   },
   "scripts": {
     "test": "jest --coverage",
+    "build": "cd config && tsc -p tsconfig.release.json",
     "test:watch": "jest --watch",
     "react-start": "cd ../client && npm start",
     "dev": " concurrently \"nodemon\" \"npm run react-start\" "
