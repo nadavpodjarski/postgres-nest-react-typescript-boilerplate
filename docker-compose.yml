@@ -1,14 +1,18 @@
-version: '2'
+version: '3'
 services:
   server:
     build: ./server
-    ports:
-      - '5000:5000'
-    restart: always
+    networks:
+      - webapp
     container_name: server
   client:
     build: ./client
+    networks:
+      - webapp
     ports:
       - '80:80'
-    restart: always
     container_name: client
+
+networks:
+  webapp:
+    driver: bridge

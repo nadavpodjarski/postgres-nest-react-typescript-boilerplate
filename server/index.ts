@@ -14,7 +14,7 @@ app.get('/api/start', (req, res) => {
   res.json({ msg: 'Start building your Express-React Application' });
 });
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5500;
 
 app.listen(PORT, () => {
   console.log('listening at port : ' + PORT);

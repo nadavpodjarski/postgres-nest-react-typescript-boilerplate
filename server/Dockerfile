@@ -1,18 +1,21 @@
-FROM node:12-alpine as builder
-RUN mkdir -p /app/server
-WORKDIR /app/server
-COPY package*.json /app/server/
-RUN npm install
-COPY . /app/server/
+FROM node:12-alpine as build
+WORKDIR /app
+COPY . /app/
+
+# prepare for build
+RUN npm install --silent
 RUN npm run build
 
-FROM node:12-alpine
-RUN mkdir -p /app/server
-WORKDIR /app/server
-COPY --from=builder /app/server/build /app/server/
-COPY package.json /app/server/package.json
-RUN npm install --only=prod
 
-EXPOSE 5000 
+# move build to new container
+FROM node:12-alpine
+WORKDIR /app
+COPY --from=build /app/build /app/
+COPY package.json /app/package.json
+RUN npm install --silent
+
+
+# start server
+EXPOSE 5500 
 USER node
 CMD ["node", "index.js"]

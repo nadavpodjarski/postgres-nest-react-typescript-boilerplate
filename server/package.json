@@ -16,7 +16,8 @@
     "build": "cd config && tsc -p tsconfig.release.json",
     "test:watch": "jest --watch",
     "react-start": "cd ../client && npm start",
-    "dev": " concurrently \"cd config && nodemon\" \"npm run react-start\" "
+    "express-start": "cd config && nodemon",
+    "dev": " concurrently \"npm run express-start\" \"npm run react-start\" "
   },
   "author": "Nadav Podjarski",
   "dependencies": {

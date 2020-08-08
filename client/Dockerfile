@@ -1,15 +1,19 @@
 FROM node:12-alpine as build
 
-RUN mkdir /app/client
-WORKDIR /app/client
-COPY package.json /app/client/package.json
-RUN npm install --only=prod
-COPY . /app/client/
+WORKDIR /app
+#copy files client to container
+COPY . /app/
+
+# prepare for build
+RUN npm install --silent
 RUN npm run build
 
-FROM nginx:1.16.0-alpine
+# prepare nginx
+FROM nginx
 RUN rm /etc/nginx/conf.d/default.conf
-COPY nginx.conf /etc/nginx/nginx.conf
-COPY --from=build /app/client/build /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/
+COPY --from=build app/build /usr/share/nginx/html 
+
+# start nginx
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
