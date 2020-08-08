@@ -1,16 +1,22 @@
 version: '3'
 services:
   server:
-    build: ./server
+    build:
+      context: ./server
+      dockerfile: Dockerfile
     networks:
       - webapp
     container_name: server
   client:
-    build: ./client
+    build:
+      context: ./client
+      dockerfile: Dockerfile
     networks:
       - webapp
     ports:
       - '80:80'
+    links:
+      - server
     container_name: client
 
 networks:

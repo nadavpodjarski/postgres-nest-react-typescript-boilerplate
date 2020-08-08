@@ -1,0 +1,11 @@
+FROM node:12-alpine
+
+WORKDIR /app
+COPY . /app
+
+RUN npm install -g nodemon --silent
+RUN npm install --silent
+
+EXPOSE 5500
+
+CMD ["nodemon"]

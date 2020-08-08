@@ -1,0 +1,37 @@
+version: '3'
+services:
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile.dev
+    networks:
+      - webapp
+    ports:
+      - 5500:5500
+    env_file: ./server/.env
+    volumes:
+      - ./server/src:/app/src
+    restart: always
+    command: nodemon
+    container_name: server
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile.dev
+    env_file: ./client/.env
+    volumes:
+      - ./client/src:/app/src
+      - ./client/public:/app/public
+    networks:
+      - webapp
+    ports:
+      - 8080:3000
+    command: npm start
+    links:
+      - server
+    stdin_open: true
+    container_name: client
+
+networks:
+  webapp:
+    driver: bridge

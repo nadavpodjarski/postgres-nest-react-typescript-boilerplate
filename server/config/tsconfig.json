@@ -3,11 +3,10 @@
     "baseUrl": "./",
     "emitDecoratorMetadata": true,
     "esModuleInterop": true,
-    "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true,
     "importHelpers": true,
     "module": "commonjs",
-    "outDir": "../build",
     "removeComments": true,
     "sourceMap": true,
     "strict": true,
@@ -15,6 +14,5 @@
     "moduleResolution": "node",
     "types": ["node"],
     "typeRoots": ["node_modules/@types"]
-  },
-  "exclude": ["."]
+  }
 }

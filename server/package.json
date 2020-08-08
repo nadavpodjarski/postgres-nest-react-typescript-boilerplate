@@ -1,12 +1,12 @@
 {
   "name": "express-react-typescript-boilerplate",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Minimalistic boilerplate to quick-start Express + React development in TypeScript.",
   "engines": {
     "node": ">= 12.13 < 13"
   },
   "devDependencies": {
-    "@types/node": "^12.12.53",
+    "@types/node": "^12.12.54",
     "prettier": "~2.0.5",
     "tsutils": "~3.17.0",
     "typescript": "~3.8.3"
@@ -16,8 +16,8 @@
     "build": "cd config && tsc -p tsconfig.release.json",
     "test:watch": "jest --watch",
     "react-start": "cd ../client && npm start",
-    "express-start": "cd config && nodemon",
-    "dev": " concurrently \"npm run express-start\" \"npm run react-start\" "
+    "start": "nodemon",
+    "dev": " concurrently \"npm run start\" \"npm run react-start\" "
   },
   "author": "Nadav Podjarski",
   "dependencies": {
@@ -29,6 +29,6 @@
     "express": "^4.17.1",
     "nodemon": "^2.0.4",
     "ts-node": "^8.10.2",
-    "tslib": "~1.11.2"
+    "tslib": "^2.0.1"
   }
 }

@@ -6,12 +6,10 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-if (process.env.NODE_ENV === 'development') {
-  require('dotenv').config();
-}
+require('dotenv').config();
 
 app.get('/api/start', (req, res) => {
-  res.json({ msg: 'Start building your Express-React Application' });
+  res.json({ msg: 'Start building your Postgres-Express-React Application' });
 });
 
 const PORT = process.env.PORT || 5500;
