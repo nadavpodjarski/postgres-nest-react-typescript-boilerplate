@@ -1,6 +1,16 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
 const Test = () => {
+  const [testMsg, setTestMsg] = useState<string>('');
+
+  useEffect(() => {
+    (async () => {
+      const res = await axios.get('/api/test');
+      setTestMsg(res.data.msg);
+    })();
+  }, []);
+
   return (
     <div
       style={{
@@ -9,10 +19,11 @@ const Test = () => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        fontSize: '2rem'
+        fontSize: '2rem',
+        fontWeight: 'bold'
       }}
     >
-      This is A router Test
+      {`${testMsg} ${process.env.REACT_APP_TEST_ENV}`}
     </div>
   );
 };

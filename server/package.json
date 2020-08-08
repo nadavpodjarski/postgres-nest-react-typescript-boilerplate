@@ -14,10 +14,7 @@
   "scripts": {
     "test": "jest --coverage",
     "build": "cd config && tsc -p tsconfig.release.json",
-    "test:watch": "jest --watch",
-    "react-start": "cd ../client && npm start",
-    "start": "nodemon",
-    "dev": " concurrently \"npm run start\" \"npm run react-start\" "
+    "test:watch": "jest --watch"
   },
   "author": "Nadav Podjarski",
   "dependencies": {

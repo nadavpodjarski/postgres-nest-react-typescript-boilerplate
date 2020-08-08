@@ -8,7 +8,8 @@ services:
       - webapp
     ports:
       - 5500:5500
-    env_file: ./server/.env
+    env_file:
+      - ./server/.env
     volumes:
       - ./server/src:/app/src
     restart: always
@@ -18,7 +19,8 @@ services:
     build:
       context: ./client
       dockerfile: Dockerfile.dev
-    env_file: ./client/.env
+    env_file:
+      - ./client/.env
     volumes:
       - ./client/src:/app/src
       - ./client/public:/app/public
