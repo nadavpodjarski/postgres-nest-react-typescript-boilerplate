@@ -11,7 +11,7 @@ services:
       - database
     depends_on:
       - postgres_db
-    command: ['./wait-for-it.sh', 'postgres_db:5432', '--', 'node', 'index']
+    command: ['./wait-for-it.sh', 'postgres_db:5432', '--', 'node', 'index.js']
     container_name: server
   #############
   ## CLIENT ##
