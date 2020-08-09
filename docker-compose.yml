@@ -36,6 +36,7 @@ services:
       - ./database/.env
     volumes:
       - ./database/db_data:/var/lib/postgresql/data/
+      - ./database/initdb.sql:/docker-entrypoint-initdb.d/init.sql
     container_name: postgres_db
 
 networks:
