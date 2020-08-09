@@ -11,6 +11,11 @@ services:
       - database
     depends_on:
       - postgres_db
+    links:
+      - postgres_db
+    env_file:
+      - ./server/.env
+    restart: always
     command: ['./wait-for-it.sh', 'postgres_db:5432', '--', 'node', 'index.js']
     container_name: server
   #############
@@ -22,9 +27,10 @@ services:
     networks:
       - webapp
     ports:
-      - '80:80'
+      - 80:80
     links:
       - server
+    restart: always
     container_name: client
   ##############
   ## POSTGRES ##
@@ -37,6 +43,9 @@ services:
     volumes:
       - ./database/data:/var/lib/postgresql/data/
       - ./database/initdb.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - 5432:5432
+    restart: always
     container_name: postgres_db
 
 networks:

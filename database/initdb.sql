@@ -8,5 +8,5 @@ CREATE TABLE Todolist
 
 INSERT INTO Todolist
 VALUES
-    (1, 'add pgadmin4 image' , 'false')
+    (1, 'add docker-compose aws deploy' , 'false')
 ;
