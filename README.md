@@ -1,1 +1,1 @@
-## Postgres - Pgdmin4 - Express.js - React.js Boilerplate
+## Postgres - Express.js - React.js Boilerplate
