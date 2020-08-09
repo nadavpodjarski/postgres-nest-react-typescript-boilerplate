@@ -1,12 +1,20 @@
 version: '3'
 services:
+  #############
+  ## SERVER ##
   server:
     build:
       context: ./server
       dockerfile: Dockerfile
     networks:
       - webapp
+      - database
+    depends_on:
+      - postgres_db
+    command: ['./wait-for-it.sh', 'postgres_db:5432', '--', 'node', 'index']
     container_name: server
+  #############
+  ## CLIENT ##
   client:
     build:
       context: ./client
@@ -18,7 +26,20 @@ services:
     links:
       - server
     container_name: client
+  ##############
+  ## POSTGRES ##
+  postgres_db:
+    image: postgres
+    networks:
+      - database
+    env_file:
+      - ./database/.env
+    volumes:
+      - ./database/db_data:/var/lib/postgresql/data/
+    container_name: postgres_db
 
 networks:
   webapp:
+    driver: bridge
+  database:
     driver: bridge

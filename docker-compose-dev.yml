@@ -1,20 +1,61 @@
-version: '3'
+version: '3.7'
 services:
+  ##############
+  ## POSTGRES ##
+  postgres_db:
+    image: postgres
+    networks:
+      - database
+    ports:
+      - 5432:5432
+    env_file:
+      - ./database/.env
+    restart: always
+    volumes:
+      - ./database/data:/var/lib/postgresql/data
+      - ./database/initdb.sql:/docker-entrypoint-initdb.d/init.sql
+    container_name: postgres_db
+  ###############
+  ## PG ADMIN ###
+  # pgadmin:
+  #   image: dpage/pgadmin4
+  #   ports:
+  #     - 5555:80
+  #   volumes:
+  #     - ./database/pgadmin/data:/var/lib/pgadmin
+  #   links:
+  #     - postgres_db
+  #   networks:
+  #     - database
+  #   depends_on:
+  #     - postgres_db
+  #   env_file:
+  #     - ./database/pgadmin/.env
+  #   container_name: pgadmin
+  #############
+  ## SERVER ##
   server:
     build:
       context: ./server
       dockerfile: Dockerfile.dev
     networks:
       - webapp
+      - database
     ports:
       - 5500:5500
     env_file:
       - ./server/.env
     volumes:
       - ./server/src:/app/src
+    links:
+      - postgres_db
+    depends_on:
+      - postgres_db
     restart: always
-    command: nodemon
+    command: ['./wait-for-it.sh', 'postgres_db:5432', '--', 'nodemon']
     container_name: server
+  #############
+  ## CLIENT ##
   client:
     build:
       context: ./client
@@ -27,13 +68,14 @@ services:
     networks:
       - webapp
     ports:
-      - 8080:3000
+      - 3000:3000
     command: npm start
     links:
       - server
     stdin_open: true
     container_name: client
-
 networks:
   webapp:
+    driver: bridge
+  database:
     driver: bridge
