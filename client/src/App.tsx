@@ -1,25 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import logo from './logo.svg';
-import axios from 'axios';
-
+import React from 'react';
+import Home from './containers/Home';
+import Test from './containers/Test';
+import Navbar from './components/Navbar';
+import { Switch, Route, BrowserRouter } from 'react-router-dom';
 import './App.css';
 
 function App() {
-  const [welcomeMsg, setWelcomeMsg] = useState<string>('');
-
-  useEffect(() => {
-    (async () => {
-      const res = await axios.get('/api/start');
-      setWelcomeMsg(res.data.msg);
-    })();
-  }, []);
-
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>{welcomeMsg}</p>
-      </header>
+      <BrowserRouter>
+        <Navbar />
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route path="/test" component={Test} />
+        </Switch>
+      </BrowserRouter>
     </div>
   );
 }
