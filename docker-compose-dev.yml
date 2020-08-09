@@ -15,6 +15,8 @@ services:
       - ./database/data:/var/lib/postgresql/data
       - ./database/initdb.sql:/docker-entrypoint-initdb.d/init.sql
     container_name: postgres_db
+  ##############
+  ## SERVER ##
   server:
     build:
       context: ./server
@@ -54,6 +56,7 @@ services:
     links:
       - server
     stdin_open: true
+    restart: always
     container_name: client
 networks:
   webapp:

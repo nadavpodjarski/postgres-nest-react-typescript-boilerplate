@@ -9,9 +9,9 @@ app.use(express.json());
 app.use(cors());
 
 // postgres configuration
-const Client = pg.Client;
+const Pool = pg.Pool;
 
-const client = new Client({
+const pool = new Pool({
   user: process.env.POSTGRES_USER,
   password: process.env.POSTGRES_PASSWORD,
   host: process.env.POSTGRES_HOST,
@@ -19,24 +19,22 @@ const client = new Client({
   port: 5432
 });
 
-client
-  .connect()
-  .then(() => {
-    console.log('connected succecfuly');
-  })
-  .then(() =>
-    client.query('select Todo from Todolist', (err, res) => {
-      if (err) console.log(err);
-      console.log(res);
-    })
-  );
-
 app.get('/api/start', (req, res) => {
   res.json({ msg: 'Start building your Postgres-Express-React Application' });
 });
 
-app.get('/api/test', (req, res) => {
-  res.json({ msg: 'This is a react-router test' });
+app.get('/api/demo', (req, res) => {
+  pool
+    .connect()
+    .then((client) => {
+      console.log('connected succecfuly');
+      client.query('select Todo,Completed from Todolist', (err, queryRes) => {
+        if (err) throw err;
+        res.json({ data: queryRes?.rows });
+        client.release();
+      });
+    })
+    .catch((err) => console.log(err));
 });
 
 const PORT = process.env.PORT || 5500;

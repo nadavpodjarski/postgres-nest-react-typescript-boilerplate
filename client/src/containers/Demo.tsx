@@ -2,12 +2,10 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
 const Test = () => {
-  const [testMsg, setTestMsg] = useState<string>('');
-
   useEffect(() => {
     (async () => {
-      const res = await axios.get('/api/test');
-      setTestMsg(res.data.msg);
+      const res = await axios.get('/api/demo');
+      console.log(res.data);
     })();
   }, []);
 
@@ -22,9 +20,7 @@ const Test = () => {
         fontSize: '2rem',
         fontWeight: 'bold'
       }}
-    >
-      {`${testMsg} ${process.env.REACT_APP_TEST_ENV}`}
-    </div>
+    ></div>
   );
 };
 

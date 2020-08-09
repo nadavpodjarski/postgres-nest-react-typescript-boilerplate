@@ -20,7 +20,7 @@ const Navbar = () => {
       className="navbar"
     >
       <Link to="/">Home</Link>
-      <Link to="/test">Test React Router</Link>
+      <Link to="/demo">Demo</Link>
     </div>
   );
 };
