@@ -152,7 +152,8 @@ const Demo = () => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            fontSize: '3rem'
+            fontSize: '3rem',
+            whiteSpace: 'nowrap'
           }}
         >
           Your Todo List
@@ -176,7 +177,13 @@ const Demo = () => {
             />
             <Button
               type="submit"
-              style={{ background: 'black', color: 'white', padding: '1rem' }}
+              style={{
+                background: '#FF0083',
+                color: 'white',
+                padding: '1rem',
+                fontSize: '1rem',
+                fontWeight: 500
+              }}
             >
               ADD
             </Button>
@@ -195,7 +202,10 @@ const Demo = () => {
                         style={{
                           minWidth: column.minWidth,
                           fontSize: '1.5rem',
-                          fontWeight: 600
+                          fontWeight: 600,
+                          height: '48px',
+                          background: 'black',
+                          color: 'white'
                         }}
                       >
                         {column.label}
@@ -209,7 +219,7 @@ const Demo = () => {
                       <TableRow
                         hover
                         tabIndex={-1}
-                        key={`${todo.id}_${btoa(todo.todo)}`}
+                        key={`${todo.id}_${todo.todo}`}
                       >
                         <TableCell
                           style={{
@@ -242,9 +252,9 @@ const Demo = () => {
                           </div>
                         </TableCell>
                         <TableCell>
-                          {new Date(todo.created_at).toLocaleString()}
+                          {new Date(todo.created_at).toLocaleString('eu')}
                         </TableCell>
-                        <TableCell>
+                        <TableCell style={{ textAlign: 'center' }}>
                           <Checkbox
                             checked={todo.completed}
                             onClick={(e) => onCompleteTodo(e, todo.id)}

@@ -15,7 +15,8 @@ const Navbar = () => {
         justifyContent: 'flex-start',
         paddingLeft: '1rem',
         background: 'white',
-        boxShadow: '0 0 8px 3px rgba(0,0,0,0.2)'
+        boxShadow: '0 0 8px 3px rgba(0,0,0,0.2)',
+        zIndex: 999
       }}
       className="navbar"
     >
