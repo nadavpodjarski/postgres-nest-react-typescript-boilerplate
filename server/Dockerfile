@@ -19,5 +19,5 @@ RUN npm install --silent
 RUN apk add --no-cache bash
 
 
-# start server
+# expose port
 EXPOSE 5500 

@@ -1,11 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-
+import { Button } from '@material-ui/core';
 const Navbar = () => {
   return (
     <div
       style={{
-        height: '64px',
+        height: '80px',
         width: '100%',
         position: 'fixed',
         top: 0,
@@ -19,8 +19,31 @@ const Navbar = () => {
       }}
       className="navbar"
     >
-      <Link to="/">Home</Link>
-      <Link to="/demo">Demo</Link>
+      <Link to="/">
+        <Button
+          style={{
+            textDecoration: 'none',
+            border: '2px black solid',
+            height: '48px',
+            width: '80px'
+          }}
+        >
+          Home
+        </Button>
+      </Link>
+      <Link to="/demo">
+        <Button
+          style={{
+            background: 'black',
+            color: 'white',
+            textDecoration: 'none',
+            height: '48px',
+            width: '80px'
+          }}
+        >
+          Demo
+        </Button>
+      </Link>
     </div>
   );
 };

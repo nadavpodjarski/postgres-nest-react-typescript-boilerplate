@@ -1,5 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap');
+
 .App {
   text-align: center;
+  font-family: 'Poppins' !important;
 }
 
 .App-logo {
@@ -25,7 +28,7 @@
 }
 
 .navbar > * {
-  padding-left: 1rem;
+  margin: 0 1rem;
 }
 
 .App-link {
