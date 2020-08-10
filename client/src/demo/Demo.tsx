@@ -175,6 +175,7 @@ const Demo = () => {
               value={newTodo}
             />
             <Button
+              type="submit"
               style={{ background: 'black', color: 'white', padding: '1rem' }}
             >
               ADD
