@@ -3,11 +3,11 @@
 ### Introduction
 
 This is a PREN-Stack Dockerized boilerplate.
-A vanila infrastructure made to simplify the develpoment and deploying processes using pern stack and docker, docker-compose.
+A vanilla infrastructure made to simplify the develpoment and deploying processes using pern stack and docker.
 
 ### Prerequisites
 
-Make sure u have this installed on your machine.
+Make sure you have the below installed on your machine.
 
 - [x] **Docker** : https://docs.docker.com/engine/install/
 - [x] **Docker-Compose** : https://docs.docker.com/compose/install/
@@ -79,7 +79,7 @@ Client has been created with create-react-app and located in ./project-name/clie
 In develpoment mode it will be run in a container built with ./client/Dockerfile.dev and will be exposed on port 3000.
 In production mode a client build will be created and will run in a container built with ./client/Dockerfile the client build/static-files and will be served with nginx server and will be exposed on port 80.
 
-Enviornment variables can be moved into running dockerfile itself under ENV or can be decalred in the docker compose file unde enviornemt property
+Enviornment variables can be moved into running dockerfile itself under ENV or can be decalred in the docker compose file under enviornemt property
 
 **note that nginx server has a minimalistic configuration**
 
@@ -128,7 +128,7 @@ To establish a development environment, simply run the following command from th
 sudo docker-compose --file docker-compose-dev.yml up
 ```
 
-On save changes in client and server, cotainers will be automatically updated, no need to restart any servers.
+On save changes in client and server, containers will be automatically updated, no need to restart any servers.
 </br>
 
 ### Production
@@ -139,7 +139,7 @@ To establish production environment, simply run the following command from the r
 sudo docker-compose up
 ```
 
-This will creates build for both server and client, will serve client build with nginx server on port 80 and will communicate with server on port 5500 in the location /api, server will communicate with postgres oon port 5432.
+This will creates build for both server and client, will serve client build with nginx server on port 80 and will communicate with server on port 5500 in the location /api.
 
 ## Demo
 
