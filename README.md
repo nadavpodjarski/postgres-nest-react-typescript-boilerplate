@@ -98,9 +98,10 @@ and will contain our database credentials :
 
         ```
 
-Voluems of our database will be located in ./database/data
+Volumes of our database will be located in ./database/data
 
 > Production volume is located in ./data/prod
+> </br>
 > Development volume is located in ./data/dev
 
 ## Server
