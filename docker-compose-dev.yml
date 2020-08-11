@@ -6,8 +6,6 @@ services:
     image: postgres
     networks:
       - database
-    ports:
-      - 5432:5432
     env_file:
       - ./database/.env
     restart: always
@@ -30,8 +28,6 @@ services:
       - ./server/.env
     volumes:
       - ./server/src:/app/src
-    links:
-      - postgres_db
     depends_on:
       - postgres_db
     restart: always
@@ -53,8 +49,6 @@ services:
     ports:
       - 3000:3000
     command: npm start
-    links:
-      - server
     stdin_open: true
     restart: always
     container_name: client

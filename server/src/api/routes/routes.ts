@@ -8,10 +8,12 @@ router.get('/get_todos', async (req, res) => {
     .connect()
     .then((client) => {
       client.query(
-        `SELECT id,todo,completed,created_at FROM Todolist ORDER BY created_at DESC`,
+        `SELECT * FROM Todolist ORDER BY created_at DESC`,
         (err, queryRes) => {
-          if (err) throw err;
-          res.json({ data: queryRes.rows });
+          if (err) {
+            console.log(err.stack);
+            res.status(500).send();
+          } else res.json({ data: queryRes.rows });
           client.release();
         }
       );
@@ -22,7 +24,7 @@ router.get('/get_todos', async (req, res) => {
 router.post('/create_todo', async (req, res) => {
   const { todo } = req.body;
   const sqlQuery = {
-    text: 'INSERT INTO Todolist(todo) VALUES($1)',
+    text: `INSERT INTO Todolist(todo) VALUES($1)`,
     values: [todo]
   };
   pool
@@ -31,9 +33,8 @@ router.post('/create_todo', async (req, res) => {
       client.query(sqlQuery, (err) => {
         if (err) {
           console.log(err.stack);
-          res.status(500).send({ err: err.stack });
-        }
-        res.status(200).send(true);
+          res.status(500).send();
+        } else res.status(200).send();
         client.release();
       });
     })
@@ -49,9 +50,8 @@ router.put('/update_todo', (req, res) => {
     .then((client) => {
       client.query(sqlQuery, (err) => {
         if (err) {
-          res.status(500).send(err);
-        }
-        res.send();
+          res.status(500).send();
+        } else res.status(200).send();
         client.release();
       });
     })
@@ -66,11 +66,10 @@ router.delete('/delete_todo/', (req, res) => {
     .connect()
     .then((client) => {
       client.query(sqlQuery, (err) => {
-        res.status(200).send(true);
         if (err) {
-          res.status(500).send(err);
+          res.status(500).send();
           console.log(err.stack);
-        }
+        } else res.status(200).send();
       });
       client.release();
     })
