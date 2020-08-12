@@ -18,7 +18,7 @@ router.get('/get_todos', async (req, res) => {
 router.post('/create_todo', async (req, res) => {
   const { todoContent } = req.body;
   try {
-    await db.query(`INSERT INTO Todolist(todo) VALES ($1)`, [todoContent]);
+    await db.query(`INSERT INTO Todolist(todo) VALUES ($1)`, [todoContent]);
     res.status(201).send();
   } catch (err) {
     res.status(500).send(`There was an error while creating ${todoContent}`);
