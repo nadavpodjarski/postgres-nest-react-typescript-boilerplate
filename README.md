@@ -128,7 +128,7 @@ in our case server and client are on the same network "webapp" , hence only the 
 
 #### Environment
 
-Enviornment variables will be located in ./server/.env
+Enviornment variables will be located in `./server/.env`
 and will contain postgres credentials to establish connection to our data-base.
 Thanks to https://github.com/vishnubob/wait-for-it for the wait-for-it.sh script, we can set that the server image will run only after getting confirmation that postgres container is available.
 by that we wont get connection failures due to bad order of docker composing.
