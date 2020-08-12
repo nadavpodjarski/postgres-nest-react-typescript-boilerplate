@@ -79,11 +79,11 @@ Client has been created with create-react-app and located in `./project-name/cli
 
 #### Development
 
-In develpoment mode cleient will be run in a container built with `./client/Dockerfile.dev` and will be exposed on port 3000, with docker volumes every on save change will be reflected within the running container.
+In develpoment mode the client will be run in a container built with `./client/Dockerfile.dev` and will be exposed on port 3000, with docker volumes every change thats been saved will be reflected within the running container.
 
 #### Production
 
-In production mode a client build will be created and will run in a container built with `./client/Dockerfile`.
+In production mode the client build will be created and will run in a container built with `./client/Dockerfile`.
 The client build/static-files will be served with nginx server and will be exposed on port 80.
 
 #### Environment Variables
@@ -117,8 +117,8 @@ Server is located in ./projec-name/server using express.
 
 #### Development
 
-In development mode it will run in a container built with `./server/Dockerfile.dev`.
-dev mode server will be exposed on port 5500 to the "outside" world and will use volumes for data persistent.
+In development mode the server will run in a container built with `./server/Dockerfile.dev`.
+and will be exposed on port 5500 to the "outside" world, with docker volumes and nodemon, every change thats been saved will be refelected within the running container.
 
 #### Production
 
