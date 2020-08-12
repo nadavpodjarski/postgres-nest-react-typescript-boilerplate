@@ -62,10 +62,10 @@ project-name
 Clone this repo to your local machine
 
 ```
-git clone https://github.com/nadavpodjarski/postgres-express-react-typescript-boilerplate.git <YOUR-PROJECT-NAME>
+git clone https://github.com/nadavpodjarski/postgres-express-react-typescript-boilerplate.git project-name
 ```
 
-run the following command to check this demo
+Run the following command to check this demo
 
 ```
 cd project-name/ && sudo docker-compose --file docker-compose-dev.yml up
@@ -75,20 +75,29 @@ cd project-name/ && sudo docker-compose --file docker-compose-dev.yml up
 
 ## Client
 
-Client has been created with create-react-app and located in ./project-name/client
-In develpoment mode it will be run in a container built with ./client/Dockerfile.dev and will be exposed on port 3000.
-In production mode a client build will be created and will run in a container built with ./client/Dockerfile the client build/static-files and will be served with nginx server and will be exposed on port 80.
+Client has been created with create-react-app and located in `./project-name/client`
 
-Enviornment variables can be moved into running dockerfile itself under ENV or can be decalred in the docker compose file under enviornemt property
+#### Development
+
+In develpoment mode cleient will be run in a container built with `./client/Dockerfile.dev` and will be exposed on port 3000, with docker volumes every on save change will be reflected within the running container.
+
+#### Production
+
+In production mode a client build will be created and will run in a container built with `./client/Dockerfile`.
+The client build/static-files will be served with nginx server and will be exposed on port 80.
+
+#### Environment Variables
+
+Enviornment variables are located in `./client/.env` but can be declared into the dockerfile itself under ENV or in the docker compose file under enviornemt property
 
 **note that nginx server has a minimalistic configuration**
 
-## Database
+## Data-base
 
 Postgres data-base is created with an official postgres image which can be found in docker hub https://hub.docker.com/_/postgres
 the data-base will be initialized with ./database/initdb.sql script. feel free to change it to your own needs.
 
-Enviornment variables will be located in ./database/.env
+Enviornment variables will be located in `./database/.env`
 and will contain our database credentials :
 
 ```
@@ -97,25 +106,32 @@ POSTGRES_PASSWORD=admin
 POSTGRES_DB=pern_db
 ```
 
-Volumes of our database will be located in ./database/data
+Volumes of our database will be located in `./database/data`
 
-> Production volume is located in ./data/prod
-> </br>
-> Development volume is located in ./data/dev
+> Production volume is located in `./data/prod` > </br>
+> Development volume is located in `./data/dev`
 
 ## Server
 
 Server is located in ./projec-name/server using express.
 
-- In development mode it will run in a container built with ./server/Dockerfile.dev.
-  dev mode server will be exposed on port 5500 to the "outside" world and will use volumes for data persistent.
-- In Production mode it will run in a container built with ./server/Dockerfile.
-  prod mode server will be exposed on port 5500 only to the docker composer internal services. as well using volumes for data persistent.
+#### Development
+
+In development mode it will run in a container built with `./server/Dockerfile.dev`.
+dev mode server will be exposed on port 5500 to the "outside" world and will use volumes for data persistent.
+
+#### Production
+
+In production mode the server will run in a container built with `./server/Dockerfile`.
+and be exposed on port 5500 only to the docker composer internal services within the same network.
+in our case server and client are on the same network "webapp" , hence only the client can communicate with the server.
+
+#### Environment
 
 Enviornment variables will be located in ./server/.env
-and will contain postgres credentials to establish connection to our databse.
-with our wait-for-it.sh script the server image will run only after getting confirmation that postgres container is available.
-by that we wont get connection failures due to wrong order of docker composing.
+and will contain postgres credentials to establish connection to our data-base.
+Thanks to https://github.com/vishnubob/wait-for-it for the wait-for-it.sh script, we can set that the server image will run only after getting confirmation that postgres container is available.
+by that we wont get connection failures due to bad order of docker composing.
 
 ## Docker compose
 
@@ -142,7 +158,7 @@ This will creates build for both server and client, will serve client build with
 
 ## Demo
 
-Demo is a simple Todolist using react as our front express as backend and postgres as our database
+Demo is a simple Todolist using React and Material-UI on client side, express on backend and postgres as our database
 demo can be started in development mode and in production mode as well.
 
 <img src="./demo1.png" style="box-shadow 0px 10px 10px rgba(0,0,0,0.3);" />
