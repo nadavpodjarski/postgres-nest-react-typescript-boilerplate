@@ -91,12 +91,11 @@ the data-base will be initialized with ./database/initdb.sql script. feel free t
 Enviornment variables will be located in ./database/.env
 and will contain our database credentials :
 
-        ```
-        POSTGRES_USER=admin
-        POSTGRES_PASSWORD=admin
-        POSTGRES_DB=pern_db
-
-        ```
+```
+POSTGRES_USER=admin
+POSTGRES_PASSWORD=admin
+POSTGRES_DB=pern_db
+```
 
 Volumes of our database will be located in ./database/data
 
@@ -111,7 +110,7 @@ Server is located in ./projec-name/server using express.
 - In development mode it will run in a container built with ./server/Dockerfile.dev.
   dev mode server will be exposed on port 5500 to the "outside" world and will use volumes for data persistent.
 - In Production mode it will run in a container built with ./server/Dockerfile.
-  prod mode server will ve exposed on port 5500 only to the docker composer internal services. as well using volumes for data persistent.
+  prod mode server will be exposed on port 5500 only to the docker composer internal services. as well using volumes for data persistent.
 
 Enviornment variables will be located in ./server/.env
 and will contain postgres credentials to establish connection to our databse.
