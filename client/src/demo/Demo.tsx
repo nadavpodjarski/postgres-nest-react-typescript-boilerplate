@@ -77,7 +77,7 @@ const Demo = () => {
           await getTodos();
         }
       } catch (err) {
-        console.error(err);
+        console.error(err.response.data);
       } finally {
         setNewTodo('');
       }
@@ -98,7 +98,7 @@ const Demo = () => {
       });
       return response;
     } catch (err) {
-      console.error(err);
+      console.error(err.response.data);
     }
   };
 
@@ -115,7 +115,7 @@ const Demo = () => {
         setTodos([...newTodos]);
       }
     } catch (err) {
-      console.error(err);
+      console.error(err.response.data);
     }
   };
 
@@ -128,7 +128,7 @@ const Demo = () => {
       });
       setTodos(res.data.data);
     } catch (err) {
-      console.error(err);
+      console.error(err.response.data);
     }
   };
 
