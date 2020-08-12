@@ -38,7 +38,6 @@ const useStyles = makeStyles({
 const Demo = () => {
   const classes = useStyles();
   const [newTodo, setNewTodo] = useState<string>('');
-  const [isRequesting, setIsRequesting] = useState<boolean>(false);
   const [todos, setTodos] = useState<Todo[]>([]);
 
   useEffect(() => {
@@ -67,20 +66,18 @@ const Demo = () => {
 
   const onSubmitCreateTodo = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (newTodo && !isRequesting) {
-      setIsRequesting(true);
+    if (newTodo) {
       try {
         const res = await axios({
           method: 'POST',
           url: '/api/create_todo',
-          data: { todo: newTodo }
+          data: { todoContent: newTodo }
         });
-        if (res.status === 200) {
+        if (res.status === 201) {
           await getTodos();
         }
       } catch (err) {
-        setIsRequesting(false);
-        throw err;
+        console.error(err);
       } finally {
         setNewTodo('');
       }
@@ -92,54 +89,46 @@ const Demo = () => {
     value: string | boolean,
     column: string
   ) => {
-    if (!isRequesting) {
-      setIsRequesting(true);
-      try {
-        const response = await axios({
-          method: 'PUT',
-          url: '/api/update_todo',
-          params: { id },
-          data: { value, column }
-        });
-        return response;
-      } catch (err) {
-        throw err;
-      } finally {
-        setIsRequesting(false);
-      }
+    try {
+      const response = await axios({
+        method: 'PUT',
+        url: '/api/update_todo',
+        params: { id },
+        data: { value, column }
+      });
+      return response;
+    } catch (err) {
+      console.error(err);
     }
   };
 
   const onDeleteTodo = async (id: number) => {
-    if (!isRequesting) {
-      setIsRequesting(true);
-      try {
-        const res = await axios({
-          method: 'DELETE',
-          url: '/api/delete_todo',
-          params: { id },
-          data: {}
-        });
-        if (res.status === 200) {
-          const newTodos = todos.filter((todo) => todo.id !== id);
-          setTodos([...newTodos]);
-        }
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setIsRequesting(false);
+    try {
+      const res = await axios({
+        method: 'DELETE',
+        url: '/api/delete_todo',
+        params: { id },
+        data: {}
+      });
+      if (res.status === 200) {
+        const newTodos = todos.filter((todo) => todo.id !== id);
+        setTodos([...newTodos]);
       }
+    } catch (err) {
+      console.error(err);
     }
   };
 
   const getTodos = async () => {
     try {
-      const res = await axios.get('/api/get_todos');
+      const res = await axios({
+        method: 'GET',
+        url: '/api/get_todos',
+        params: { orderBy: 'created_at', direction: 'desc' }
+      });
       setTodos(res.data.data);
     } catch (err) {
-      throw err;
-    } finally {
-      setIsRequesting(false);
+      console.error(err);
     }
   };
 
@@ -214,7 +203,7 @@ const Demo = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {todos.map((todo) => {
+                  {todos?.map((todo) => {
                     return (
                       <TableRow
                         hover
