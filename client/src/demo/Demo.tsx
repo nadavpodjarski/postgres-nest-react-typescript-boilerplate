@@ -48,20 +48,22 @@ const Demo = () => {
     setNewTodo(e.target.value);
   };
 
-  const onCompleteTodo = (e: any, sqlId: number) => {
+  const onCompleteTodo = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    sqlId: number
+  ) => {
     const { id, checked } = e.target;
     const newTodos = todos;
     const todo = todos.find((todo) => todo.id === sqlId);
 
-    if (todo) {
-      todo[id as keyof Todo] = checked as never;
+    if (todo && id === 'completed') {
+      onUpdateTodo(sqlId, checked, id).then((res) => {
+        if (res?.status === 200) {
+          todo[id] = checked;
+          setTodos([...newTodos]);
+        }
+      });
     }
-
-    onUpdateTodo(sqlId, checked, id).then((res) => {
-      if (res?.status === 200) {
-        setTodos([...newTodos]);
-      }
-    });
   };
 
   const onSubmitCreateTodo = async (e: React.FormEvent) => {
@@ -246,7 +248,7 @@ const Demo = () => {
                         <TableCell style={{ textAlign: 'center' }}>
                           <Checkbox
                             checked={todo.completed}
-                            onClick={(e) => onCompleteTodo(e, todo.id)}
+                            onChange={(e) => onCompleteTodo(e, todo.id)}
                             id="completed"
                           />
                         </TableCell>
