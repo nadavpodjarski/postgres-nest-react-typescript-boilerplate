@@ -89,14 +89,14 @@ The client build/static-files will be served with nginx server and will be expos
 #### Environment Variables
 
 Enviornment variables are located in `./client/.env` but can be declared into the dockerfile itself under ENV or in the docker compose file under enviornemt property.
-**In order to o use docker stack deploy** its needed to use one of the other options and not env_file.
+**In order to use docker stack deploy** its needed to use one of the other options and not env_file.
 
 **note that nginx server has a minimalistic configuration**
 
 ## Data-base
 
 Postgres data-base is created with an official postgres image which can be found in docker hub https://hub.docker.com/_/postgres
-the data-base will be initialized with ./database/initdb.sql script. feel free to change it to your own needs.
+the data-base will be initialized with `./database/initdb.sql` script. feel free to change it to your own needs.
 
 Enviornment variables will be located in `./database/.env`
 and will contain our database credentials :
@@ -114,7 +114,7 @@ Volumes of our database will be located in `./database/data`
 
 ## Server
 
-Server is located in ./projec-name/server using express.
+Server is located in `./projec-name/server` using express.
 
 #### Development
 
