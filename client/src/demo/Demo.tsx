@@ -76,10 +76,10 @@ const Demo = () => {
           data: { todoContent: newTodo }
         });
         if (res.status === 201) {
-          await getTodos();
+          setTodos((prevState) => [res.data, ...prevState]);
         }
       } catch (err) {
-        console.error(err.response.data);
+        console.error(err.response?.data);
       } finally {
         setNewTodo('');
       }

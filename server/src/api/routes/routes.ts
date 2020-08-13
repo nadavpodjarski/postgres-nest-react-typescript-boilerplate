@@ -19,7 +19,10 @@ router.post('/create_todo', async (req, res) => {
   const { todoContent } = req.body;
   try {
     await db.query(`INSERT INTO Todolist(todo) VALUES ($1)`, [todoContent]);
-    res.status(201).send();
+    const sqlRes = await db.query(
+      `SELECT * FROM Todolist ORDER BY created_at DESC limit 1`
+    );
+    res.status(201).send(sqlRes.rows[0]);
   } catch (err) {
     res.status(500).send(`There was an error while creating ${todoContent}`);
   }
