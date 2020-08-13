@@ -89,7 +89,7 @@ The client build/static-files will be served with nginx server and will be expos
 #### Environment Variables
 
 Enviornment variables are located in `./client/.env` but can be declared into the dockerfile itself under ENV or in the docker compose file under enviornemt property.
-**In order to o use docker stack deploy** need one of the other options and not env_file.
+**In order to o use docker stack deploy** its needed to use one of the other options and not env_file.
 
 **note that nginx server has a minimalistic configuration**
 
