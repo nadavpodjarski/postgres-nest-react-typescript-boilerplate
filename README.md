@@ -1,5 +1,7 @@
 ## Postgres - Express.js - React.js Boilerplate
 
+![Docker compose build](https://github.com/nadavpodjarski/postgres-express-react-typescript-boilerplate/workflows/Docker%20compose%20build/badge.svg?branch=master)
+
 <img src="./readme titel-img.png" style="max-width:300px; max-height:200px;">
 
 ### Introduction
