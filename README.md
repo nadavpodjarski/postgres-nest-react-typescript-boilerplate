@@ -1,5 +1,6 @@
 ## Postgres - Express.js - React.js Boilerplate
 
+<img src="./readme titel-img.png" style="max-width:300px; max-height:200px;">
 ### Introduction
 
 This is a PREN-Stack Dockerized boilerplate.
