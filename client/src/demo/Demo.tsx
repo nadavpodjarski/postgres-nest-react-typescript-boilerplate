@@ -126,7 +126,7 @@ const Demo = () => {
       const res = await axios({
         method: 'GET',
         url: '/api/get_todos',
-        params: { orderBy: 'created_at', direction: 'desc' }
+        params: { orderBy: 'created_at' }
       });
       setTodos(res.data.data);
     } catch (err) {

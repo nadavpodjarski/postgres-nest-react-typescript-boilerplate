@@ -4,12 +4,19 @@ import { pool as db } from '../db-config';
 export const router = Router();
 
 router.get('/get_todos', async (req, res) => {
-  const { orderBy, direction } = req.query;
+  const { orderBy } = req.query;
+  let sqlRes;
   try {
-    const sqlRes = await db.query(
-      `SELECT * FROM Todolist ORDER BY ${orderBy} ${direction}`
-    );
-    res.json({ data: sqlRes.rows });
+    switch (orderBy) {
+      case 'created_at':
+        sqlRes = await db.query(
+          `SELECT * FROM Todolist ORDER BY created_at DESC`
+        );
+        break;
+      default:
+        break;
+    }
+    res.json({ data: sqlRes?.rows });
   } catch (err) {
     res.status(500).send(`There was an error fetching todos`);
   }
@@ -32,7 +39,16 @@ router.put('/update_todo', async (req, res) => {
   const { id } = req.query;
   const { value, column } = req.body;
   try {
-    await db.query(`UPDATE Todolist SET ${column} = ${value} WHERE id=${id}`);
+    switch (column) {
+      case 'completed':
+        await db.query('UPDATE Todolist SET completed = $1 WHERE id = $2', [
+          value,
+          id
+        ]);
+        break;
+      default:
+        break;
+    }
     res.status(200).send();
   } catch (err) {
     res.status(500).send(`There was an error while updating`);
@@ -42,7 +58,7 @@ router.put('/update_todo', async (req, res) => {
 router.delete('/delete_todo/', async (req, res) => {
   const { id } = req.query;
   try {
-    await db.query(`DELETE FROM Todolist WHERE id=${id}`);
+    await db.query('DELETE FROM Todolist WHERE id=$1', [id]);
     res.status(200).send();
   } catch (err) {
     res.status(500).send(`There was an error while deleting`);
