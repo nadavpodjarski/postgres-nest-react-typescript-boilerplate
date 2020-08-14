@@ -76,13 +76,21 @@ Clone this repo to your local machine
 git clone https://github.com/nadavpodjarski/postgres-express-react-typescript-boilerplate.git project-name
 ```
 
-Run the following command to check this demo
+Before we run our container lets calm down our editor and npm install dependecies locally.
+For that let's run the following command
 
 ```
-cd project-name/ && sudo docker-compose --file docker-compose-dev.yml up
+cd project-name/server && npm i && cd ../client && npm i
+```
+
+Now we can run our container, for that run the following command to check this demo
+
+```
+cd ../ && sudo docker-compose --file docker-compose-dev.yml up
 ```
 
 it will be served on `http://localchost:3000`
+
 **Replace project-name with your own**
 
 ## Client
@@ -168,5 +176,15 @@ sudo docker-compose up
 ```
 
 This will creates build for both server and client, will serve client build with nginx server on port 80 and will communicate with server on port 5500 in the location /api.
+
+## Good to know
+
+- To drop the use of sudo run the folowing command in your terminal
+
+```
+sudo usermod -aG docker $USER
+```
+
+- If you are making changes within the dockerfiles you will need to rebuild them, for that add the --build flag to the docker compose up command.
 
 ## Enjoy

@@ -27,6 +27,7 @@ services:
     env_file:
       - ./server/.env
     volumes:
+      - ./server/node_modules:/app/node_modules
       - ./server/src:/app/src
     depends_on:
       - postgres_db
@@ -42,6 +43,7 @@ services:
     env_file:
       - ./client/.env
     volumes:
+      - ./client/node_modules:/app/node_modules
       - ./client/src:/app/src
       - ./client/public:/app/public
     networks:
