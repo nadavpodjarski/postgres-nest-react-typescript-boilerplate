@@ -25,9 +25,9 @@ router.get('/get_todos', async (req, res) => {
 router.post('/create_todo', async (req, res) => {
   const { todoContent } = req.body;
   try {
-    await db.query(`INSERT INTO Todolist(todo) VALUES ($1)`, [todoContent]);
     const sqlRes = await db.query(
-      `SELECT * FROM Todolist ORDER BY created_at DESC limit 1`
+      'INSERT INTO Todolist(todo) VALUES ($1) RETURNING *',
+      [todoContent]
     );
     res.status(201).send(sqlRes.rows[0]);
   } catch (err) {

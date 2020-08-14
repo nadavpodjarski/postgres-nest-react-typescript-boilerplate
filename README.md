@@ -1,7 +1,7 @@
 ## Postgres - Express.js - React.js Boilerplate
 
-![Docker compose build](https://github.com/nadavpodjarski/postgres-express-react-typescript-boilerplate/workflows/Docker%20compose%20build/badge.svg?branch=master)
-
+![docker compose build](https://github.com/nadavpodjarski/postgres-express-react-typescript-boilerplate/workflows/Docker%20compose%20build/badge.svg?branch=master)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 <img src="./readme titel-img.png" style="max-width:300px; max-height:200px;">
 
 ### Introduction
@@ -79,17 +79,23 @@ git clone https://github.com/nadavpodjarski/postgres-express-react-typescript-bo
 Before we run our container lets calm down our editor and npm install dependecies locally.
 For that let's run the following command
 
-```
-cd project-name/server && npm i && cd ../client && npm i
+```bash
+# install server dependencies
+
+cd project-name/server && npm i
+
+# instal client dependencies
+
+cd ../client && npm i
 ```
 
-Now Let's check the our Demo for that run the following command
+Now Let's check our Demo, for that run the following command
 
-```
+```bash
 cd ../ && sudo docker-compose --file docker-compose-dev.yml up
 ```
 
-it will be served on `http://localchost:3000`
+it will be served on `http://localhost:3000`
 
 **Replace project-name with your own**
 
@@ -129,7 +135,7 @@ POSTGRES_DB=pern_db
 
 Volumes of our database will be located in `./database/data`
 
-> Production volume is located in `./data/prod` > </br>
+> Production volume is located in `./data/prod` </br>
 > Development volume is located in `./data/dev`
 
 ## Server
@@ -145,7 +151,7 @@ and will be exposed on port 5500 to the "outside" world, with docker volumes and
 
 In production mode the server will run in a container built with `./server/Dockerfile`.
 and be exposed on port 5500 only to the docker composer internal services within the same network.
-in our case server and client are on the same network "webapp" , hence only the client can communicate with the server.
+in our case server and client are on the same network "webapp" , hence only the client can communicate with the server, and will do thatthrough the `/api` location. for more locations, its needed to configure them in the `./client/nginx.conf` file.
 
 #### Environment
 
@@ -160,7 +166,7 @@ by that we wont get connection failures due to bad order of docker composing.
 
 To establish a development environment, simply run the following command from the project root folder.
 
-```
+```bash
 sudo docker-compose --file docker-compose-dev.yml up
 ```
 
@@ -171,7 +177,7 @@ On save changes in client and server, containers will be automatically updated, 
 
 To establish production environment, simply run the following command from the root folder.
 
-```
+```bash
 sudo docker-compose up
 ```
 
@@ -181,7 +187,7 @@ This will creates build for both server and client, will serve client build with
 
 - To drop the use of sudo run the folowing command in your terminal
 
-```
+```bash
 sudo usermod -aG docker $USER
 ```
 
