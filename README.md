@@ -61,6 +61,13 @@ project-name
     README.md
 ```
 
+## Demo
+
+Demo is a simple Todolist using React and Material-UI on client side, express on backend and postgres as our database
+demo can be started in development mode and in production mode as well.
+
+<img src="./demo1.png" style="box-shadow 0px 10px 10px rgba(0,0,0,0.3);" />
+
 ### Quick start
 
 Clone this repo to your local machine
@@ -161,12 +168,5 @@ sudo docker-compose up
 ```
 
 This will creates build for both server and client, will serve client build with nginx server on port 80 and will communicate with server on port 5500 in the location /api.
-
-## Demo
-
-Demo is a simple Todolist using React and Material-UI on client side, express on backend and postgres as our database
-demo can be started in development mode and in production mode as well.
-
-<img src="./demo1.png" style="box-shadow 0px 10px 10px rgba(0,0,0,0.3);" />
 
 ## Enjoy
