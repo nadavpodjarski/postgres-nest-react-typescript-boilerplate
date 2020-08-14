@@ -83,7 +83,7 @@ For that let's run the following command
 cd project-name/server && npm i && cd ../client && npm i
 ```
 
-Now we can run our container, for that run the following command to check this demo
+Now Let's check the our Demo for that run the following command
 
 ```
 cd ../ && sudo docker-compose --file docker-compose-dev.yml up
