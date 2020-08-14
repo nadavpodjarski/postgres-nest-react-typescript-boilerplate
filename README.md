@@ -71,6 +71,7 @@ Run the following command to check this demo
 cd project-name/ && sudo docker-compose --file docker-compose-dev.yml up
 ```
 
+it will be served on `http://localchost:3000`
 **Replace project-name with your own**
 
 ## Client
