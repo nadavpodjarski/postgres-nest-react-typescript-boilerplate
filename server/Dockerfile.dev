@@ -1,3 +1,4 @@
+
 FROM node:12-alpine
 
 WORKDIR /app
@@ -9,4 +10,3 @@ RUN npm install --silent
 RUN apk add --no-cache bash
 
 EXPOSE 5500
-

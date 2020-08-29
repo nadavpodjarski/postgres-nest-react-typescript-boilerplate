@@ -11,10 +11,8 @@ services:
       - database
     depends_on:
       - postgres_db
-    env_file:
-      - ./server/.env
     restart: always
-    command: ['./wait-for-it.sh', 'postgres_db:5432', '--', 'node', 'index.js']
+    command: ['./wait-for-it.sh', 'postgres_db:5432', '--', 'node', 'main.js']
     container_name: server
   #############
   ## CLIENT ##
@@ -38,7 +36,6 @@ services:
       - ./database/.env
     volumes:
       - ./database/data/prod:/var/lib/postgresql/data/
-      - ./database/initdb.sql:/docker-entrypoint-initdb.d/init.sql
     restart: always
     container_name: postgres_db
 

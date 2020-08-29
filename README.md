@@ -2,12 +2,20 @@
 
 ![docker compose build](https://github.com/nadavpodjarski/postgres-express-react-typescript-boilerplate/workflows/Docker%20compose%20build/badge.svg?branch=master)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-<img src="./readme titel-img.png" style="max-width:300px; max-height:200px;">
+<img src="./loby-img.png" style="max-width:300px; max-height:200px;">
 
 ### Introduction
 
-This is a PREN-Stack Dockerized boilerplate.
+This is a Full-stack Dockerized boilerplate.
 A vanilla infrastructure made to simplify the develpoment and deploying processes using pern stack and docker.
+
+#### Stack
+
+- React.js
+- Node.js
+- Nest.js
+- Postgres
+- Docker
 
 ### Prerequisites
 
@@ -153,9 +161,9 @@ In production mode the server will run in a container built with `./server/Docke
 and be exposed on port 5500 only to the docker composer internal services within the same network.
 in our case server and client are on the same network "webapp" , hence only the client can communicate with the server, and will do thatthrough the `/api` location. for more locations, its needed to configure them in the `./client/nginx.conf` file.
 
-#### Environment
+#### Data-base connection
 
-Enviornment variables will be located in `./server/.env`
+Data-base connection is handled with ormconfig.json that is located at `./server/ormconfig.json`
 and will contain postgres credentials to establish connection to our data-base.
 Thanks to https://github.com/vishnubob/wait-for-it for the wait-for-it.sh script, we can set that the server image will run only after getting confirmation that postgres container is available.
 by that we wont get connection failures due to bad order of docker composing.

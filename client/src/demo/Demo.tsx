@@ -13,15 +13,15 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import './demo.css';
 
 type Todo = {
-  todo: string;
-  created_at: string;
+  content: string;
+  createdOn: string;
   completed: boolean;
   id: number;
 };
 
 const header = [
   { id: 'todo', label: 'Todo', minWidth: 320 },
-  { id: 'created_at', label: 'Created At', minWidth: 150 },
+  { id: 'createdOn', label: 'Created On', minWidth: 150 },
   { id: 'completed', label: 'Completed', minWidth: 100 }
 ];
 
@@ -39,6 +39,7 @@ const Demo = () => {
   const classes = useStyles();
   const [newTodo, setNewTodo] = useState<string>('');
   const [todos, setTodos] = useState<Todo[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     getTodos();
@@ -48,7 +49,7 @@ const Demo = () => {
     setNewTodo(e.target.value);
   };
 
-  const onCompleteTodo = (
+  const onCompleteTodo = async (
     e: React.ChangeEvent<HTMLInputElement>,
     sqlId: number
   ) => {
@@ -57,12 +58,15 @@ const Demo = () => {
     const todo = todos.find((todo) => todo.id === sqlId);
 
     if (todo && id === 'completed') {
-      onUpdateTodo(sqlId, checked, id).then((res) => {
+      try {
+        const res = await onUpdateTodo(sqlId, { completed: checked });
         if (res?.status === 200) {
           todo[id] = checked;
           setTodos([...newTodos]);
         }
-      });
+      } catch (err) {
+        console.error(err.response?.data);
+      }
     }
   };
 
@@ -70,11 +74,7 @@ const Demo = () => {
     e.preventDefault();
     if (newTodo) {
       try {
-        const res = await axios({
-          method: 'POST',
-          url: '/api/create_todo',
-          data: { todoContent: newTodo }
-        });
+        const res = await onCreateTodo(newTodo);
         if (res.status === 201) {
           setTodos((prevState) => [res.data, ...prevState]);
         }
@@ -86,21 +86,33 @@ const Demo = () => {
     }
   };
 
+  const onCreateTodo = async (content: string) => {
+    try {
+      const res = await axios({
+        method: 'POST',
+        url: '/api/todo/create',
+        data: { content }
+      });
+      return res;
+    } catch (err) {
+      throw err;
+    }
+  };
+
   const onUpdateTodo = async (
     id: number,
-    value: string | boolean,
-    column: string
+    data: { [key: string]: string | boolean }
   ) => {
     try {
-      const response = await axios({
-        method: 'PUT',
-        url: '/api/update_todo',
+      const res = await axios({
+        method: 'PATCH',
+        url: '/api/todo/update',
         params: { id },
-        data: { value, column }
+        data
       });
-      return response;
+      return res;
     } catch (err) {
-      console.error(err.response.data);
+      throw err;
     }
   };
 
@@ -108,7 +120,7 @@ const Demo = () => {
     try {
       const res = await axios({
         method: 'DELETE',
-        url: '/api/delete_todo',
+        url: '/api/todo/delete',
         params: { id },
         data: {}
       });
@@ -117,7 +129,7 @@ const Demo = () => {
         setTodos([...newTodos]);
       }
     } catch (err) {
-      console.error(err.response.data);
+      console.error(err.response?.data);
     }
   };
 
@@ -125,12 +137,14 @@ const Demo = () => {
     try {
       const res = await axios({
         method: 'GET',
-        url: '/api/get_todos',
-        params: { orderBy: 'created_at' }
+        url: '/api/todo/all'
       });
-      setTodos(res.data.data);
+
+      setTodos(res.data);
     } catch (err) {
-      console.error(err.response.data);
+      console.error(err.response?.data);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -205,56 +219,74 @@ const Demo = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {todos?.map((todo) => {
-                    return (
-                      <TableRow
-                        hover
-                        tabIndex={-1}
-                        key={`${todo.id}_${todo.todo}`}
-                      >
-                        <TableCell
+                  {!todos.length && !isLoading ? (
+                    <TableRow hover>
+                      <TableCell colSpan={3}>
+                        <div
                           style={{
+                            width: '100%',
                             display: 'flex',
-                            justifyContent: 'space-between',
-                            alignItems: 'center',
-                            fontSize: '1.2rem'
+                            justifyContent: 'center',
+                            fontSize: '1.5rem',
+                            fontWeight: 'bold'
                           }}
                         >
-                          <div
-                            style={{
-                              textDecoration: todo.completed
-                                ? 'line-through'
-                                : ''
-                            }}
-                          >
-                            {todo.todo}
-                          </div>
-
-                          <div
+                          Nothing To Do
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ) : (
+                    todos.map((todo) => {
+                      return (
+                        <TableRow
+                          hover
+                          tabIndex={-1}
+                          key={`${todo.id}_${todo.content}`}
+                        >
+                          <TableCell
                             style={{
                               display: 'flex',
+                              justifyContent: 'space-between',
                               alignItems: 'center',
-                              justifyContent: 'center'
+                              fontSize: '1.2rem'
                             }}
                           >
-                            <IconButton onClick={() => onDeleteTodo(todo.id)}>
-                              <DeleteIcon />
-                            </IconButton>
-                          </div>
-                        </TableCell>
-                        <TableCell>
-                          {new Date(todo.created_at).toLocaleString('eu')}
-                        </TableCell>
-                        <TableCell style={{ textAlign: 'center' }}>
-                          <Checkbox
-                            checked={todo.completed}
-                            onChange={(e) => onCompleteTodo(e, todo.id)}
-                            id="completed"
-                          />
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })}
+                            <div
+                              style={{
+                                textDecoration: todo.completed
+                                  ? 'line-through'
+                                  : ''
+                              }}
+                            >
+                              {todo.content}
+                            </div>
+
+                            <div
+                              style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center'
+                              }}
+                            >
+                              <IconButton onClick={() => onDeleteTodo(todo.id)}>
+                                <DeleteIcon />
+                              </IconButton>
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            {new Date(todo.createdOn).toLocaleString('eu')}
+                          </TableCell>
+                          <TableCell style={{ textAlign: 'center' }}>
+                            <Checkbox
+                              checked={todo.completed}
+                              onChange={(e) => onCompleteTodo(e, todo.id)}
+                              id="completed"
+                            />
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })
+                  )}
                 </TableBody>
               </Table>
             </TableContainer>
