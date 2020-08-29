@@ -1,4 +1,4 @@
-## Postgres - Express.js - React.js Boilerplate
+## Postgres - Nest.js - React.js Boilerplate
 
 ![docker compose build](https://github.com/nadavpodjarski/postgres-express-react-typescript-boilerplate/workflows/Docker%20compose%20build/badge.svg?branch=master)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
