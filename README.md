@@ -7,7 +7,7 @@
 ### Introduction
 
 This is a Full-stack Dockerized boilerplate.
-A vanilla infrastructure made to simplify the develpoment and deploying processes using pern stack and docker.
+A vanilla infrastructure made to simplify the develpoment and deploying processes.
 
 #### Stack
 
@@ -50,10 +50,9 @@ project-name
             .gitignore
     |---/ server
             |
-            |---/ config
             |---/src
             |
-            .env
+            ormconfig.json
             .dockerignore
             .gitignore
             Dockerfile
@@ -71,7 +70,7 @@ project-name
 
 ## Demo
 
-Demo is a simple Todolist using React and Material-UI on client side, express on backend and postgres as our database
+Demo is a simple Todolist using React and Material-UI on client side, nest on backend and postgres as our database
 demo can be started in development mode and in production mode as well.
 
 <img src="./demo1.png" style="box-shadow 0px 10px 10px rgba(0,0,0,0.3);" />
