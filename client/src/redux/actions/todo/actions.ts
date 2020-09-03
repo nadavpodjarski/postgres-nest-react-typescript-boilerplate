@@ -1,6 +1,7 @@
 import * as types from './types';
 import axios from 'axios';
 import { Todo } from '../../../types';
+import { setSnackBar } from '../ui/actions';
 
 const makeRequest = () => {
   return {
@@ -73,10 +74,12 @@ export const completeTodo = (id: string, checked: boolean) => {
         if (completedTodo) {
           completedTodo['completed'] = checked;
           dispatch(completeTodoSuccess(todos));
+          dispatch(setSnackBar({ type: 'info', msg: 'Todo was updated' }));
         } else throw new Error('cannot find todo');
       })
       .catch((err) => {
         dispatch(catchRequestErr(err));
+        dispatch(setSnackBar({ type: 'error', msg: err.message }));
       });
   };
 };
@@ -90,9 +93,11 @@ export const addTodo = (content: string) => (dispatch: any) => {
   })
     .then((res) => {
       dispatch(addTodoSuccess(res.data));
+      dispatch(setSnackBar({ type: 'success', msg: `${content} was added` }));
     })
     .catch((err) => {
       dispatch(catchRequestErr(err));
+      dispatch(setSnackBar({ type: 'error', msg: err.message }));
     });
 };
 
@@ -105,8 +110,10 @@ export const deleteTodo = (id: string) => (dispatch: any) => {
   })
     .then(() => {
       dispatch(deleteTodoSuccess(id));
+      dispatch(setSnackBar({ type: 'info', msg: 'Todo was deleted' }));
     })
     .catch((err) => {
       dispatch(catchRequestErr(err));
+      dispatch(setSnackBar({ type: 'error', msg: err.message }));
     });
 };

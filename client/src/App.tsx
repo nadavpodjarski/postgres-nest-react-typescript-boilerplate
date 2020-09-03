@@ -5,7 +5,7 @@ import Navbar from './containers/Navbar';
 import { Switch, Route, BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from './redux/store/store';
-
+import SnackBar from './components/SnackBar';
 import './App.css';
 
 function App() {
@@ -20,6 +20,10 @@ function App() {
           </Switch>
         </BrowserRouter>
       </div>
+      <SnackBar
+        position={{ vertical: 'bottom', horizontal: 'left' }}
+        duration={3000}
+      />
     </Provider>
   );
 }

@@ -20,6 +20,7 @@ export const todoReducer = (
     case types.REQUEST_FAILURE:
       return {
         ...state,
+        isLoading: false,
         err: action.payload
       };
     case types.ADD_TODO:

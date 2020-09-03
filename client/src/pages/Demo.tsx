@@ -103,59 +103,61 @@ const Demo = () => {
   };
 
   return (
-    <div className={classes.demoWrapper}>
-      <div className={classes.todoListWrapper}>
-        <div className={classes.title}>Your Todo List</div>
-        <div className={classes.formWrapper}>
-          <form className={classes.form} onSubmit={onAddTodo}>
-            <TextField
-              variant="outlined"
-              style={{ marginBottom: '1rem' }}
-              value={newTodo}
-              onChange={onChange}
-            />
-            <AddButton />
-          </form>
-        </div>
+    <>
+      <div className={classes.demoWrapper}>
+        <div className={classes.todoListWrapper}>
+          <div className={classes.title}>Your Todo List</div>
+          <div className={classes.formWrapper}>
+            <form className={classes.form} onSubmit={onAddTodo}>
+              <TextField
+                variant="outlined"
+                style={{ marginBottom: '1rem' }}
+                value={newTodo}
+                onChange={onChange}
+              />
+              <AddButton />
+            </form>
+          </div>
 
-        <TodosTable
-          /**
-           *
-           */
-          header={header}
-          /**
-           *
-           */
-          data={todoState.todos}
-          /**
-           *
-           */
-          stickyHeader={true}
-          /**
-           *
-           */
-          placeHolder="Nothing to do"
-          /**
-           *
-           */
-          headerStyle={{ background: 'black' }}
-          /**
-           *
-           */
-          rowStyle={{ color: 'black', fontSize: '1.5rem' }}
-          /**
-           *
-           */
-          onDeleteTodo={(e, todoId) => onDeleteTodo(e, todoId)}
-          /**
-           *
-           */
-          onCompleteTodo={(e, checked, todoId) =>
-            onCompleteTodo(e, checked, todoId)
-          }
-        />
+          <TodosTable
+            /**
+             *
+             */
+            header={header}
+            /**
+             *
+             */
+            data={todoState.todos}
+            /**
+             *
+             */
+            stickyHeader={true}
+            /**
+             *
+             */
+            placeHolder="Nothing to do"
+            /**
+             *
+             */
+            headerStyle={{ background: 'black' }}
+            /**
+             *
+             */
+            rowStyle={{ color: 'black', fontSize: '1.5rem' }}
+            /**
+             *
+             */
+            onDeleteTodo={(e, todoId) => onDeleteTodo(e, todoId)}
+            /**
+             *
+             */
+            onCompleteTodo={(e, checked, todoId) =>
+              onCompleteTodo(e, checked, todoId)
+            }
+          />
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
