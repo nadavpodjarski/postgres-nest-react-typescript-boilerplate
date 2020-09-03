@@ -5,7 +5,7 @@ import Navbar from './containers/Navbar';
 import { Switch, Route, BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from './redux/store/store';
-import SnackBar from './components/SnackBar';
+import SnackBar from './components/snackbar/SnackBar';
 import './App.css';
 
 function App() {

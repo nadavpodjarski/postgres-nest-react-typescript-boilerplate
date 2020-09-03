@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { TableRow, TableCell, Checkbox, makeStyles } from '@material-ui/core';
-import DeleteButton from './DeleteButton';
-import { Todo, RowStyle } from '../types';
+import DeleteButton from '../delete-button/DeleteButton';
+import { Todo, RowStyle } from '../../types';
 
 const useStyles = makeStyles(() => ({
   contentTableCell: {

@@ -1,9 +1,9 @@
 import React, { FC, useState, useEffect } from 'react';
 import { Snackbar, SnackbarOrigin } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
-import { IStore, AlertType } from '../types';
+import { IStore, AlertType } from '../../types';
 import { useSelector, useDispatch } from 'react-redux';
-import { clearSetSnackBar } from '../redux/actions/ui/actions';
+import { clearSetSnackBar } from '../../redux/actions/ui/actions';
 
 const Toast: FC<{ position: SnackbarOrigin; duration: number }> = ({
   position: { vertical, horizontal },

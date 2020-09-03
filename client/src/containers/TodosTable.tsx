@@ -3,9 +3,9 @@ import { Paper, Table, TableContainer, TableBody } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { Todo, TodosTableHeader, HeaderStyle, RowStyle } from '../types';
 
-import TableHeader from '../components/Header';
-import RowPlaceHolder from '../components/RowPlaceHolder';
-import Row from '../components/Row';
+import TableHeader from '../components/header/Header';
+import RowPlaceHolder from '../components/row/RowPlaceHolder';
+import Row from '../components/row/Row';
 
 const useStyles = makeStyles({
   root: {
@@ -69,7 +69,7 @@ const TodosTable: FC<{
                  */
                 <RowPlaceHolder
                   placeHolder={placeHolder || 'Put your place holder here'}
-                  colSpan={3}
+                  colSpan={header.length}
                   rowStyle={rowStyle}
                 />
               ) : (

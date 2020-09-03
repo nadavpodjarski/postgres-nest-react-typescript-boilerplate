@@ -1,4 +1,4 @@
-import React, { FC, CSSProperties, Dispatch } from 'react';
+import React, { FC, CSSProperties } from 'react';
 import { Button, Typography } from '@material-ui/core';
 
 const AddButton: FC<{

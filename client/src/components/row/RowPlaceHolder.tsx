@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { TableRow, TableCell } from '@material-ui/core';
-import { RowStyle } from '../types';
+import { RowStyle } from '../../types';
 
 const PlaceHolder: FC<{
   placeHolder: string;

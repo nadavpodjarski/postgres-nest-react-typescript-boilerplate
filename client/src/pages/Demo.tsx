@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { TextField, makeStyles, Theme } from '@material-ui/core';
 import { IStore } from '../types';
 import TodosTable from '../containers/TodosTable';
-import AddButton from '../components/AddButton';
+import AddButton from '../components/add-button/AddButton';
 import { useDispatch, useSelector } from 'react-redux';
 import * as todoActions from '../redux/actions/todo/actions';
 
@@ -67,12 +67,6 @@ const Demo = () => {
   useEffect(() => {
     dispatch(todoActions.getAllTodos());
   }, []);
-
-  useEffect(() => {
-    if (todoState.err) {
-      console.error(todoState.err);
-    }
-  }, [todoState.err]);
 
   const onDeleteTodo = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
