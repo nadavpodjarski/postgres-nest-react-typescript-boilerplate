@@ -12,6 +12,7 @@ A vanilla infrastructure made to simplify the develpoment and deploying processe
 #### Stack
 
 - React.js
+- Redux
 - Node.js
 - Nest.js
 - Postgres
@@ -129,9 +130,8 @@ Enviornment variables are located in `./client/.env` but can be declared into th
 ## Data-base
 
 Postgres data-base is created with an official postgres image which can be found in docker hub https://hub.docker.com/_/postgres
-the data-base will be initialized with `./database/initdb.sql` script. feel free to change it to your own needs.
 
-Enviornment variables will be located in `./database/.env`
+Enviornment variables will be located in the docker-compose file.`
 and will contain our database credentials :
 
 ```
@@ -140,10 +140,10 @@ POSTGRES_PASSWORD=admin
 POSTGRES_DB=pern_db
 ```
 
-Volumes of our database will be located in `./database/data`
+Volumes of our database will be located in `./server/database/data`
 
-> Production volume is located in `./data/prod` </br>
-> Development volume is located in `./data/dev`
+> Production volume is located in `./server/data/prod` </br>
+> Development volume is located in `./server/data/dev`
 
 ## Server
 

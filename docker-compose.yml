@@ -32,10 +32,12 @@ services:
     image: postgres
     networks:
       - database
-    env_file:
-      - ./database/.env
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=demo
     volumes:
-      - ./database/data/prod:/var/lib/postgresql/data/
+      - ./server/database/data/prod:/var/lib/postgresql/data/
     restart: always
     container_name: postgres_db
 
