@@ -11,6 +11,8 @@ services:
       - database
     depends_on:
       - postgres_db
+    environment:
+      - SECRET='¯\_(ツ)_/¯'
     restart: always
     command: ['./wait-for-it.sh', 'postgres_db:5432', '--', 'node', 'main.js']
     container_name: server

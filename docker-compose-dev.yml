@@ -25,6 +25,8 @@ services:
       - database
     ports:
       - 5500:5500
+    environment:
+      - SECRET="¯\_(ツ)_/¯"
     volumes:
       - ./server/node_modules:/app/node_modules
       - ./server/src:/app/src

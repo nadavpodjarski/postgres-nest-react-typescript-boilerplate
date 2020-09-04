@@ -30,7 +30,6 @@ const TodosTable: FC<ITodoTable> = ({
   //
   //
   const classes = useStyles();
-
   //
   //
   return (

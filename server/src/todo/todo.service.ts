@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { TodosEntity } from './todo.entity';
-import { ITodoDTO } from './todo.dto';
+import { TodoDTO } from './todo.dto';
 
 @Injectable()
 export class TodoService {
@@ -11,27 +11,27 @@ export class TodoService {
     private todoRepository: Repository<TodosEntity>,
   ) {}
 
-  async getAllTodos() {
+  getAllTodos = async () => {
     return await this.todoRepository.find({ order: { createdOn: 'DESC' } });
-  }
+  };
 
-  async createTodo(content: Extract<ITodoDTO, 'content'>) {
+  createTodo = async (content: Extract<TodoDTO, 'content'>) => {
     const newTodo = this.todoRepository.create({ content });
     await this.todoRepository.save(newTodo);
     return newTodo;
-  }
+  };
 
-  async updateTodo(id: string, data: Partial<ITodoDTO>) {
+  updateTodo = async (id: string, data: Partial<TodoDTO>) => {
     if (data.hasOwnProperty('completed')) {
       await this.todoRepository.update({ id }, { completed: data.completed });
     }
     if (data.content) {
       await this.todoRepository.update({ id }, { content: data.content });
     }
-  }
+  };
 
-  async deleteTodo(id: string) {
+  deleteTodo = async (id: string) => {
     await this.todoRepository.delete({ id });
     return { deleted: true };
-  }
+  };
 }

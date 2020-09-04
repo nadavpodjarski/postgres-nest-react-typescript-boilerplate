@@ -8,9 +8,9 @@ import {
   Query,
 } from '@nestjs/common';
 import { TodoService } from './todo.service';
-import { ITodoDTO } from './todo.dto';
+import { TodoDTO } from './todo.dto';
 
-@Controller('/todo')
+@Controller('todo')
 export class TodoController {
   constructor(private todoService: TodoService) {}
 
@@ -20,12 +20,12 @@ export class TodoController {
   }
 
   @Post('/create')
-  createTodo(@Body('content') content: Extract<ITodoDTO, 'content'>) {
+  createTodo(@Body('content') content: Extract<TodoDTO, 'content'>) {
     return this.todoService.createTodo(content);
   }
 
   @Patch('/update')
-  updateTodo(@Query('id') id: string, @Body() data: Partial<ITodoDTO>) {
+  updateTodo(@Query('id') id: string, @Body() data: Partial<TodoDTO>) {
     return this.todoService.updateTodo(id, data);
   }
 
