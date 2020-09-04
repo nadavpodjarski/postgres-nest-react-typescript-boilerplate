@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
 import { Paper, Table, TableContainer, TableBody } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { Todo, TodosTableHeader, HeaderStyle, RowStyle } from '../types';
 
+import { ITodoTable } from '../types';
 import TableHeader from '../components/header/Header';
 import RowPlaceHolder from '../components/row/RowPlaceHolder';
 import Row from '../components/row/Row';
@@ -16,28 +16,13 @@ const useStyles = makeStyles({
     scrollBehavior: 'smooth'
   }
 });
-const TodosTable: FC<{
-  data: Todo[];
-  header: TodosTableHeader[];
-  stickyHeader: boolean;
-  placeHolder?: string;
-  headerStyle?: HeaderStyle;
-  rowStyle?: RowStyle;
-  onCompleteTodo: (
-    event: React.ChangeEvent<HTMLInputElement>,
-    checked: boolean,
-    id: string
-  ) => void;
-  onDeleteTodo: (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-    id: string
-  ) => void;
-}> = ({
+const TodosTable: FC<ITodoTable> = ({
   data,
   header,
   headerStyle,
   rowStyle,
   placeHolder,
+  isLoading,
   onDeleteTodo,
   onCompleteTodo,
   stickyHeader = true
@@ -45,6 +30,7 @@ const TodosTable: FC<{
   //
   //
   const classes = useStyles();
+
   //
   //
   return (
@@ -62,17 +48,7 @@ const TodosTable: FC<{
              *
              */}
             <TableBody>
-              {!data.length ? (
-                /**
-                 *
-                 *
-                 */
-                <RowPlaceHolder
-                  placeHolder={placeHolder || 'Put your place holder here'}
-                  colSpan={header.length}
-                  rowStyle={rowStyle}
-                />
-              ) : (
+              {data.length ? (
                 /**
                  *
                  *
@@ -89,6 +65,20 @@ const TodosTable: FC<{
                     />
                   );
                 })
+              ) : (
+                /**
+                 *
+                 *
+                 */
+                <RowPlaceHolder
+                  placeHolder={
+                    isLoading
+                      ? 'Loading...'
+                      : placeHolder || 'Put your place holder here'
+                  }
+                  colSpan={header.length}
+                  rowStyle={rowStyle}
+                />
               )}
             </TableBody>
           </Table>

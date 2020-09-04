@@ -1,12 +1,30 @@
+import { Dispatch } from 'react';
 import * as types from './types';
 import axios from 'axios';
 import { Todo } from '../../../types';
 import { setSnackBar } from '../ui/actions';
 
-const makeRequest = () => {
+const createGetAllTodo = () => {
   return {
-    type: types.MAKE_REQUEST,
-    payload: true
+    type: types.GET_ALL_TODOS
+  };
+};
+
+const createCompleteTodo = () => {
+  return {
+    type: types.COMPLETE_TODO
+  };
+};
+
+const createDeleteTodo = () => {
+  return {
+    type: types.DELETE_TODO
+  };
+};
+
+const createAddTodo = () => {
+  return {
+    type: types.ADD_TODO
   };
 };
 
@@ -19,73 +37,87 @@ const catchRequestErr = (err: any) => {
 
 const getAllTodosSuccess = (data: Todo[]) => {
   return {
-    type: types.GET_ALL_TODOS,
+    type: types.GET_ALL_TODOS_SUCCESS,
     payload: data
   };
 };
 
 const deleteTodoSuccess = (id: string) => {
   return {
-    type: types.DELETE_TODO,
+    type: types.DELETE_TODO_SUCCESS,
     payload: id
   };
 };
 
 const addTodoSuccess = (data: string) => {
   return {
-    type: types.ADD_TODO,
+    type: types.ADD_TODO_SUCCESS,
     payload: data
   };
 };
 
 const completeTodoSuccess = (data: any) => {
   return {
-    type: types.COMPLETE_TODO,
+    type: types.COMPLETE_TODO_SUCCESS,
     payload: data
   };
 };
 
-export const getAllTodos = () => {
-  return (dispatch: any) => {
-    dispatch(makeRequest());
-    axios
-      .get('/api/todo/all')
-      .then((res) => {
-        dispatch(getAllTodosSuccess(res.data));
-      })
-      .catch((err) => {
-        dispatch(catchRequestErr(err));
-      });
-  };
-};
-
-export const completeTodo = (id: string, checked: boolean) => {
-  return (dispatch: any, getStore: any) => {
-    dispatch(makeRequest());
-    axios({
-      method: 'PATCH',
-      url: '/api/todo/update',
-      params: { id },
-      data: { completed: checked }
+export const getAllTodos = () => (dispatch: Dispatch<any>) => {
+  //
+  dispatch(createGetAllTodo());
+  //
+  axios
+    .get('/api/todo/all')
+    .then((res) => {
+      dispatch(getAllTodosSuccess(res.data));
     })
-      .then(() => {
-        const { todos } = getStore().todo;
-        const completedTodo = todos.find((todo: any) => todo.id === id);
-        if (completedTodo) {
-          completedTodo['completed'] = checked;
-          dispatch(completeTodoSuccess(todos));
-          dispatch(setSnackBar({ type: 'info', msg: 'Todo was updated' }));
-        } else throw new Error('cannot find todo');
-      })
-      .catch((err) => {
-        dispatch(catchRequestErr(err));
-        dispatch(setSnackBar({ type: 'error', msg: err.message }));
-      });
-  };
+    .catch((err) => {
+      dispatch(catchRequestErr(err));
+    });
 };
 
-export const addTodo = (content: string) => (dispatch: any) => {
-  dispatch(makeRequest());
+export const completeTodo = (id: string, checked: boolean) => (
+  dispatch: Dispatch<any>,
+  getStore: any
+) => {
+  //
+  dispatch(createCompleteTodo());
+  //
+  axios({
+    method: 'PATCH',
+    url: '/api/todo/update',
+    params: { id },
+    data: { completed: checked }
+  })
+    .then(() => {
+      //
+      //
+      const todos = getStore().todo.todos as Todo[];
+      const completedTodo = todos.find((todo) => todo.id === id) as NonNullable<
+        Todo
+      >;
+      //
+      //
+      completedTodo.completed = checked;
+      dispatch(completeTodoSuccess(todos));
+      dispatch(
+        setSnackBar({
+          type: 'info',
+          msg: `${completedTodo.content} was updated`
+        })
+      );
+    })
+    .catch((err) => {
+      dispatch(catchRequestErr(err));
+      dispatch(setSnackBar({ type: 'error', msg: err.message }));
+    });
+};
+
+export const addTodo = (content: string) => (dispatch: Dispatch<any>) => {
+  //
+  dispatch(createAddTodo());
+  //
   axios({
     method: 'POST',
     url: '/api/todo/create',
@@ -101,16 +133,31 @@ export const addTodo = (content: string) => (dispatch: any) => {
     });
 };
 
-export const deleteTodo = (id: string) => (dispatch: any) => {
-  dispatch(makeRequest());
+export const deleteTodo = (id: string) => (
+  dispatch: Dispatch<any>,
+  getStore: any
+) => {
+  //
+  dispatch(createDeleteTodo());
+  //
   axios({
     method: 'DELETE',
     url: '/api/todo/delete',
     params: { id }
   })
     .then(() => {
+      //
+      //
+      const todos = getStore().todo.todos as Todo[];
+      const deletedTodo = todos.find((todo) => todo.id === id) as NonNullable<
+        Todo
+      >;
+      //
+      //
       dispatch(deleteTodoSuccess(id));
-      dispatch(setSnackBar({ type: 'info', msg: 'Todo was deleted' }));
+      dispatch(
+        setSnackBar({ type: 'info', msg: `${deletedTodo.content} was deleted` })
+      );
     })
     .catch((err) => {
       dispatch(catchRequestErr(err));

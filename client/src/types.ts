@@ -42,3 +42,22 @@ export type SnackBarAlert = {
   type: AlertType;
   msg: string;
 };
+
+export interface ITodoTable {
+  data: Todo[];
+  header: TodosTableHeader[];
+  stickyHeader: boolean;
+  placeHolder?: string;
+  headerStyle?: HeaderStyle;
+  rowStyle?: RowStyle;
+  isLoading: boolean;
+  onCompleteTodo: (
+    event: React.ChangeEvent<HTMLInputElement>,
+    checked: boolean,
+    id: string
+  ) => void;
+  onDeleteTodo: (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    id: string
+  ) => void;
+}

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { TextField, makeStyles, Theme } from '@material-ui/core';
-import { IStore } from '../types';
 import TodosTable from '../containers/TodosTable';
 import AddButton from '../components/add-button/AddButton';
+
+import { IStore } from '../types';
 import { useDispatch, useSelector } from 'react-redux';
 import * as todoActions from '../redux/actions/todo/actions';
 
@@ -114,6 +115,7 @@ const Demo = () => {
           </div>
 
           <TodosTable
+            isLoading={todoState.isLoading}
             /**
              *
              */
