@@ -3,10 +3,12 @@ import {
   Column,
   Entity,
   CreateDateColumn,
+  ManyToOne,
 } from 'typeorm';
+import { UserEntity } from 'src/user/user.entity';
 
 @Entity('todos')
-export class TodosEntity {
+export class TodoEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -24,4 +26,10 @@ export class TodosEntity {
     default: false,
   })
   completed: boolean;
+
+  // @ManyToOne(
+  //   type => UserEntity,
+  //   author => author.todos,
+  // )
+  // author: UserEntity;
 }

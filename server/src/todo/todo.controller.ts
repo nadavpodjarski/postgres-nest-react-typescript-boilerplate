@@ -6,11 +6,15 @@ import {
   Delete,
   Body,
   Query,
+  UseGuards,
 } from '@nestjs/common';
+
 import { TodoService } from './todo.service';
 import { TodoDTO } from './todo.dto';
+import { AuthGuard } from 'src/shared/auth.guard';
 
 @Controller('todo')
+@UseGuards(new AuthGuard())
 export class TodoController {
   constructor(private todoService: TodoService) {}
 

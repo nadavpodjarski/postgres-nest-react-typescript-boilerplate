@@ -3,7 +3,6 @@ import axios from 'axios';
 
 const Home = () => {
   const [welcomeMsg, setWelcomeMsg] = useState<string>('');
-
   useEffect(() => {
     (async () => {
       const res = await axios.get('/api/start');

@@ -59,21 +59,20 @@ const header = [
 const Demo = () => {
   const [newTodo, setNewTodo] = useState<string>('');
 
-  const dispatch = useDispatch();
-
-  const todoState = useSelector((state: IStore) => state.todo);
-
   const classes = useStyles();
 
-  useEffect(() => {
-    dispatch(todoActions.getAllTodos());
-  }, []);
+  const dispatch = useDispatch();
+  const todoState = useSelector((state: IStore) => state.todo);
+  const authState = useSelector((state: IStore) => state.auth);
 
-  const onDeleteTodo = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-    todoId: string
-  ) => {
-    dispatch(todoActions.deleteTodo(todoId));
+  useEffect(() => {
+    authState.isAuthenticated && dispatch(todoActions.getAllTodos());
+  }, [authState.isAuthenticated]);
+
+  const onDeleteTodo = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    return (todoId: string) => {
+      dispatch(todoActions.deleteTodo(todoId));
+    };
   };
 
   const onAddTodo = (e: React.FormEvent) => {
@@ -84,12 +83,12 @@ const Demo = () => {
     }
   };
 
-  const onCompleteTodo = (
-    event: React.ChangeEvent<HTMLInputElement>,
-    checked: boolean,
-    id: string
-  ) => {
-    dispatch(todoActions.completeTodo(id, checked));
+  const onCompleteTodo = (event: React.ChangeEvent<HTMLInputElement>) => {
+    return (checked: boolean) => {
+      return (id: string) => {
+        dispatch(todoActions.completeTodo(id, checked));
+      };
+    };
   };
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -143,12 +142,12 @@ const Demo = () => {
             /**
              *
              */
-            onDeleteTodo={(e, todoId) => onDeleteTodo(e, todoId)}
+            onDeleteTodo={(e, todoId) => onDeleteTodo(e)(todoId)}
             /**
              *
              */
             onCompleteTodo={(e, checked, todoId) =>
-              onCompleteTodo(e, checked, todoId)
+              onCompleteTodo(e)(checked)(todoId)
             }
           />
         </div>

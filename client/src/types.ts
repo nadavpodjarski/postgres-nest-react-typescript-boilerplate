@@ -1,5 +1,10 @@
 import { CSSProperties } from 'react';
 
+export type UserCreds = {
+  email: string;
+  password: string;
+};
+
 export type Todo = {
   content: string;
   createdOn: string;
@@ -11,6 +16,13 @@ export type TodosTableHeader = {
   id: string;
   label: string;
   minWidth: number;
+};
+
+export type AlertType = 'success' | 'info' | 'warning' | 'error' | undefined;
+
+export type SnackBarAlert = {
+  type: AlertType;
+  msg: string;
 };
 
 export type HeaderStyle = CSSProperties;
@@ -30,18 +42,19 @@ export interface ITodoState {
 export interface IStore {
   todo: ITodoState;
   ui: IUiState;
+  auth: IAuth;
 }
 
 export interface IUiState {
   snackbar: SnackBarAlert;
 }
 
-export type AlertType = 'success' | 'info' | 'warning' | 'error' | undefined;
-
-export type SnackBarAlert = {
-  type: AlertType;
-  msg: string;
-};
+export interface IAuth {
+  currentUser: any;
+  err: any;
+  isLoading: boolean;
+  isAuthenticated: boolean;
+}
 
 export interface ITodoTable {
   data: Todo[];

@@ -1,9 +1,9 @@
-import { IsEmail, Length } from 'class-validator';
+import { IsEmail, MinLength } from 'class-validator';
 
 export class UserDTO {
   @IsEmail()
   email: string;
 
-  @Length(3, 12)
+  @MinLength(6)
   password: string;
 }

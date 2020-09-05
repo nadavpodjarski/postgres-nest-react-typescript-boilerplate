@@ -6,7 +6,7 @@ import { setSnackBar } from '../ui/actions';
 
 const createGetAllTodo = () => {
   return {
-    type: types.GET_ALL_TODOS
+    type: types.GET_ALL_TODO
   };
 };
 
@@ -67,13 +67,16 @@ export const getAllTodos = () => (dispatch: Dispatch<any>) => {
   //
   dispatch(createGetAllTodo());
   //
-  axios
-    .get('/api/todo/all')
+  axios({
+    method: 'GET',
+    url: '/api/todo/all'
+  })
     .then((res) => {
       dispatch(getAllTodosSuccess(res.data));
     })
     .catch((err) => {
       dispatch(catchRequestErr(err));
+      dispatch(setSnackBar({ type: 'error', msg: err.response.data.message }));
     });
 };
 
@@ -109,8 +112,9 @@ export const completeTodo = (id: string, checked: boolean) => (
       );
     })
     .catch((err) => {
+      console.log(err.message);
       dispatch(catchRequestErr(err));
-      dispatch(setSnackBar({ type: 'error', msg: err.message }));
+      dispatch(setSnackBar({ type: 'error', msg: err.response.data.message }));
     });
 };
 
@@ -129,7 +133,7 @@ export const addTodo = (content: string) => (dispatch: Dispatch<any>) => {
     })
     .catch((err) => {
       dispatch(catchRequestErr(err));
-      dispatch(setSnackBar({ type: 'error', msg: err.message }));
+      dispatch(setSnackBar({ type: 'error', msg: err.response.data.message }));
     });
 };
 
@@ -161,6 +165,6 @@ export const deleteTodo = (id: string) => (
     })
     .catch((err) => {
       dispatch(catchRequestErr(err));
-      dispatch(setSnackBar({ type: 'error', msg: err.message }));
+      dispatch(setSnackBar({ type: 'error', msg: err.response.data.message }));
     });
 };

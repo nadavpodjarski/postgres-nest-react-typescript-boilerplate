@@ -39,4 +39,11 @@ export class UserService {
     const users = await this.userRepository.find();
     return users.map(user => user.sanitizeObject());
   };
+
+  getProfile = async (email: string): Promise<any> => {
+    const user = await this.userRepository.findOne({ where: { email } });
+    if (!user)
+      throw new HttpException('Email does not exists', HttpStatus.NOT_FOUND);
+    return user.sanitizeObject();
+  };
 }

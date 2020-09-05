@@ -4,10 +4,12 @@ import {
   Column,
   CreateDateColumn,
   BeforeInsert,
+  OneToMany,
 } from 'typeorm';
 
 import { hash, compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
+import { TodoEntity } from 'src/todo/todo.entity';
 
 @Entity('user')
 export class UserEntity {
@@ -30,6 +32,12 @@ export class UserEntity {
   hashPassword = async () => {
     this.password = await hash(this.password, 8);
   };
+
+  // @OneToMany(
+  //   type => TodoEntity,
+  //   todo => todo.author,
+  // )
+  // todos: TodoEntity[];
 
   comparePassword = async (attempt: string) => {
     return await compare(attempt, this.password);

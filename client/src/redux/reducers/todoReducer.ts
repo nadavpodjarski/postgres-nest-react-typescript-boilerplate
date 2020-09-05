@@ -27,7 +27,7 @@ export const todoReducer = (
         ...state,
         err: ''
       };
-    case types.GET_ALL_TODOS:
+    case types.GET_ALL_TODO:
       return {
         ...state,
         isLoading: true,

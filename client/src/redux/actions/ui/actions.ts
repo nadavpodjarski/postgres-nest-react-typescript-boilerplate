@@ -8,7 +8,7 @@ export const setSnackBar = (data: SnackBarAlert) => {
   };
 };
 
-export const clearSetSnackBar = () => {
+export const clearSnackBar = () => {
   return {
     type: types.CLEAR_SNACKBAR
   };
