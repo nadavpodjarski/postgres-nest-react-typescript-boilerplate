@@ -7,6 +7,7 @@ import {
   Body,
   Query,
   UseGuards,
+  Req,
 } from '@nestjs/common';
 
 import { TodoService } from './todo.service';
@@ -19,22 +20,33 @@ export class TodoController {
   constructor(private todoService: TodoService) {}
 
   @Get('/all')
-  getAllTodos() {
-    return this.todoService.getAllTodos();
+  getAllTodos(@Req() req) {
+    const userId = req.user.id;
+    return this.todoService.getAllTodos(userId);
   }
 
   @Post('/create')
-  createTodo(@Body('content') content: Extract<TodoDTO, 'content'>) {
-    return this.todoService.createTodo(content);
+  createTodo(
+    @Req() req,
+    @Body('content') content: Extract<TodoDTO, 'content'>,
+  ) {
+    const userId = req.user.id;
+    return this.todoService.createTodo(userId, content);
   }
 
   @Patch('/update')
-  updateTodo(@Query('id') id: string, @Body() data: Partial<TodoDTO>) {
-    return this.todoService.updateTodo(id, data);
+  updateTodo(
+    @Query('id') id: string,
+    @Req() req,
+    @Body() data: Partial<TodoDTO>,
+  ) {
+    const userId = req.user.id;
+    return this.todoService.updateTodo(userId, id, data);
   }
 
   @Delete('/delete')
-  deleteTodo(@Query('id') id: string) {
-    return this.todoService.deleteTodo(id);
+  deleteTodo(@Req() req, @Query('id') id: string) {
+    const userId = req.user.id;
+    return this.todoService.deleteTodo(userId, id);
   }
 }

@@ -1,6 +1,8 @@
 import React, { FC, useState, useEffect } from 'react';
+
 import { Snackbar, SnackbarOrigin } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
+
 import { IStore, AlertType } from '../../types';
 import { useSelector, useDispatch } from 'react-redux';
 import { clearSnackBar } from '../../redux/actions/ui/actions';
@@ -17,7 +19,7 @@ const Toast: FC<{ position: SnackbarOrigin; duration: number }> = ({
   const [msg, setMsg] = useState<string>(snackBarState.msg);
   const [type, setType] = useState<AlertType>(snackBarState.type);
 
-  const onHandleClose = () => {
+  const onCloseHandler = () => {
     dispatch(clearSnackBar());
   };
 
@@ -33,7 +35,7 @@ const Toast: FC<{ position: SnackbarOrigin; duration: number }> = ({
 
   return (
     <Snackbar
-      onClose={onHandleClose}
+      onClose={onCloseHandler}
       open={isOpen}
       autoHideDuration={duration}
       anchorOrigin={{ vertical, horizontal }}

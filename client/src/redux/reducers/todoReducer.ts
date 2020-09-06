@@ -1,11 +1,11 @@
 import * as types from '../actions/todo/types';
-import * as fakeTypes from '../fake/fakeTypes';
+
 import { ITodoState, Action } from '../../types';
 
 const initialState: ITodoState = {
   todos: [],
   isLoading: true,
-  err: ''
+  err: null
 };
 
 export const todoReducer = (
@@ -15,24 +15,20 @@ export const todoReducer = (
   switch (action.type) {
     case types.COMPLETE_TODO:
       return {
-        ...state,
-        err: ''
+        ...state
       };
     case types.ADD_TODO:
       return {
-        ...state,
-        err: ''
+        ...state
       };
     case types.DELETE_TODO:
       return {
-        ...state,
-        err: ''
+        ...state
       };
     case types.GET_ALL_TODO:
       return {
         ...state,
-        isLoading: true,
-        err: ''
+        isLoading: true
       };
     case types.REQUEST_FAILURE:
       return {
@@ -44,57 +40,41 @@ export const todoReducer = (
       return {
         ...state,
         todos: [action.payload, ...state.todos],
-        isLoading: false
+        isLoading: false,
+        err: null
       };
     case types.DELETE_TODO_SUCCESS:
       return {
         ...state,
         todos: [...state.todos.filter((item) => item.id !== action.payload)],
-        isLoading: false
+        isLoading: false,
+        err: null
       };
     case types.GET_ALL_TODOS_SUCCESS:
       return {
         ...state,
         todos: action.payload,
-        isLoading: false
+        isLoading: false,
+        err: null
       };
-    case types.COMPLETE_TODO_SUCCESS:
+    case types.COMPLETE_TODO_SUCCESS: {
+      const todos = state.todos.map((todo) => {
+        if (todo.id === action.payload.id)
+          todo.completed = action.payload.checked;
+        return todo;
+      });
       return {
         ...state,
+        todos,
         isLoading: false,
-        todos: [...action.payload]
+        err: null
       };
-    case types.RESET:
+    }
+    case types.CLEAR_TODOS:
       return {
         todos: [],
         isLoading: true,
-        err: ''
-      };
-    /**
-     *
-     * FAKE DATA HANDLER
-     *
-     */
-    case fakeTypes.GET_FAKE_DATA:
-      return {
-        ...state,
-        isLoading: false,
-        todos: action.payload
-      };
-    case fakeTypes.ADD_FAKE_TODO:
-      return {
-        ...state,
-        todos: [action.payload, ...state.todos]
-      };
-    case fakeTypes.COMPLETE_FAKE_TODO:
-      return {
-        ...state,
-        todos: [...action.payload]
-      };
-    case fakeTypes.DELETE_FAKE_TODO:
-      return {
-        ...state,
-        todos: [...state.todos.filter((todo) => todo.id !== action.payload)]
+        err: null
       };
     default:
       return state;

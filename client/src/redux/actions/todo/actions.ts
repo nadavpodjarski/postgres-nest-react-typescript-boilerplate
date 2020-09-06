@@ -1,40 +1,16 @@
 import { Dispatch } from 'react';
+
 import * as types from './types';
-import axios from 'axios';
+
 import { Todo } from '../../../types';
 import { setSnackBar } from '../ui/actions';
 
-import { fakeData } from '../../fake/fakeData';
-import * as fakeActions from '../../fake/fakeActions';
+import * as todoAPI from '../../../api/todo';
 
+//----- GET TODOS ----- //
 const createGetAllTodo = () => {
   return {
     type: types.GET_ALL_TODO
-  };
-};
-
-const createCompleteTodo = () => {
-  return {
-    type: types.COMPLETE_TODO
-  };
-};
-
-const createDeleteTodo = () => {
-  return {
-    type: types.DELETE_TODO
-  };
-};
-
-const createAddTodo = () => {
-  return {
-    type: types.ADD_TODO
-  };
-};
-
-const catchRequestErr = (err: any) => {
-  return {
-    type: types.REQUEST_FAILURE,
-    payload: err.message
   };
 };
 
@@ -45,178 +21,106 @@ const getAllTodosSuccess = (data: Todo[]) => {
   };
 };
 
-const deleteTodoSuccess = (id: string) => {
+export const getAllTodos = () => async (dispatch: Dispatch<any>) => {
+  try {
+    dispatch(createGetAllTodo());
+    const res = await todoAPI.getAllTodos();
+    dispatch(getAllTodosSuccess(res.data));
+  } catch (err) {
+    dispatch(catchRequestErr(err));
+  }
+};
+
+//----- COMPLETE TODO ----- //
+const createCompleteTodo = () => {
   return {
-    type: types.DELETE_TODO_SUCCESS,
-    payload: id
+    type: types.COMPLETE_TODO
   };
 };
 
-const addTodoSuccess = (data: string) => {
-  return {
-    type: types.ADD_TODO_SUCCESS,
-    payload: data
-  };
-};
-
-const completeTodoSuccess = (data: any) => {
-  return {
+const completeTodoSuccess = (data: any) => (dispatch: Dispatch<any>) => {
+  dispatch({
     type: types.COMPLETE_TODO_SUCCESS,
     payload: data
-  };
+  });
+  dispatch(
+    setSnackBar({
+      type: 'info',
+      msg: `Todo was updated`
+    })
+  );
 };
 
-export const resetTodos = () => {
+export const completeTodo = (id: string, checked: boolean) => async (
+  dispatch: Dispatch<any>
+) => {
+  try {
+    dispatch(createCompleteTodo());
+    await todoAPI.completeTodo(id, checked);
+    dispatch(completeTodoSuccess({ id, checked }));
+  } catch (err) {
+    dispatch(catchRequestErr(err));
+  }
+};
+
+//----- ADD TODO ----- //
+const createAddTodo = () => {
   return {
-    type: types.RESET
+    type: types.ADD_TODO
+  };
+};
+const addTodoSuccess = (data: Todo) => (dispatch: Dispatch<any>) => {
+  dispatch({
+    type: types.ADD_TODO_SUCCESS,
+    payload: data
+  });
+  dispatch(setSnackBar({ type: 'success', msg: `${data.content} was added` }));
+};
+export const addTodo = (content: string) => async (dispatch: Dispatch<any>) => {
+  try {
+    dispatch(createAddTodo());
+    const res = await todoAPI.addTodo(content);
+    dispatch(addTodoSuccess(res.data));
+  } catch (err) {
+    dispatch(catchRequestErr(err));
+  }
+};
+
+//----- DELETE TODO ----- //
+const createDeleteTodo = () => {
+  return {
+    type: types.DELETE_TODO
   };
 };
 
-export const getAllTodos = () => (dispatch: Dispatch<any>, getStore: any) => {
-  const { isLoggedIn, isFakeData } = getStore().auth;
-  /**
-   * FAKE DATA HANDLER
-   */
-  if (isFakeData) {
-    dispatch(fakeActions.getFakeData(fakeData));
-    return;
-  }
-  /**
-   *
-   */
-  if (isLoggedIn) {
-    dispatch(createGetAllTodo());
-    axios({
-      method: 'GET',
-      url: '/api/todo/all'
-    })
-      .then((res) => {
-        dispatch(getAllTodosSuccess(res.data));
-      })
-      .catch((err) => {
-        dispatch(catchRequestErr(err));
-        dispatch(
-          setSnackBar({ type: 'error', msg: err.response.data.message })
-        );
-      });
+const deleteTodoSuccess = (id: string) => (disptach: Dispatch<any>) => {
+  disptach({
+    type: types.DELETE_TODO_SUCCESS,
+    payload: id
+  });
+  disptach(setSnackBar({ type: 'info', msg: 'Todo deleted successfully' }));
+};
+
+export const deleteTodo = (id: string) => async (dispatch: Dispatch<any>) => {
+  try {
+    dispatch(createDeleteTodo());
+    await todoAPI.deleteTodo(id);
+    dispatch(deleteTodoSuccess(id));
+  } catch (err) {
+    dispatch(catchRequestErr(err));
   }
 };
 
-export const completeTodo = (id: string, checked: boolean) => (
-  dispatch: Dispatch<any>,
-  getStore: any
-) => {
-  const { isFakeData } = getStore().auth;
-  const todos = getStore().todo.todos as Todo[];
-  const completedTodo = todos.find((todo) => todo.id === id) as NonNullable<
-    Todo
-  >;
-  completedTodo.completed = checked;
-  /**
-   * FAKE DATA HANDLER
-   */
-  if (isFakeData) {
-    dispatch(fakeActions.completeFakeTodo(todos));
-    dispatch(
-      setSnackBar({
-        type: 'info',
-        msg: `${completedTodo.content} was updated`
-      })
-    );
-    return;
-  }
-  /**
-   *
-   */
-  dispatch(createCompleteTodo());
-  axios({
-    method: 'PATCH',
-    url: '/api/todo/update',
-    params: { id },
-    data: { completed: checked }
-  })
-    .then(() => {
-      dispatch(completeTodoSuccess(todos));
-      dispatch(
-        setSnackBar({
-          type: 'info',
-          msg: `${completedTodo.content} was updated`
-        })
-      );
-    })
-    .catch((err) => {
-      console.log(err.message);
-      dispatch(catchRequestErr(err));
-      dispatch(setSnackBar({ type: 'error', msg: err.response.data.message }));
-    });
+const catchRequestErr = (err: any) => (dispatch: Dispatch<any>) => {
+  dispatch({
+    type: types.REQUEST_FAILURE,
+    payload: err.message
+  });
+  setSnackBar({ type: 'error', msg: err.message });
 };
 
-export const addTodo = (content: string) => (
-  dispatch: Dispatch<any>,
-  getStore: any
-) => {
-  const { isFakeData } = getStore().auth;
-  /**
-   * FAKE DATA HANDLER
-   */
-  if (isFakeData) {
-    dispatch(fakeActions.addFakeTodo(content));
-    dispatch(setSnackBar({ type: 'success', msg: `${content} was added` }));
-    return;
-  }
-  /**
-   *
-   */
-  dispatch(createAddTodo());
-  axios({
-    method: 'POST',
-    url: '/api/todo/create',
-    data: { content }
-  })
-    .then((res) => {
-      dispatch(addTodoSuccess(res.data));
-      dispatch(setSnackBar({ type: 'success', msg: `${content} was added` }));
-    })
-    .catch((err) => {
-      dispatch(catchRequestErr(err));
-      dispatch(setSnackBar({ type: 'error', msg: err.response.data.message }));
-    });
-};
-
-export const deleteTodo = (id: string) => (
-  dispatch: Dispatch<any>,
-  getStore: any
-) => {
-  const { isFakeData } = getStore().auth;
-  const todos = getStore().todo.todos as Todo[];
-  const deletedTodo = todos.find((todo) => todo.id === id) as NonNullable<Todo>;
-  /**
-   * FAKE DATA HANDLER
-   */
-  if (isFakeData) {
-    dispatch(fakeActions.deleteFakeTodo(id));
-    dispatch(
-      setSnackBar({ type: 'info', msg: `${deletedTodo.content} was deleted` })
-    );
-    return;
-  }
-  /**
-   *
-   */
-  dispatch(createDeleteTodo());
-  axios({
-    method: 'DELETE',
-    url: '/api/todo/delete',
-    params: { id }
-  })
-    .then(() => {
-      dispatch(deleteTodoSuccess(id));
-      dispatch(
-        setSnackBar({ type: 'info', msg: `${deletedTodo.content} was deleted` })
-      );
-    })
-    .catch((err) => {
-      dispatch(catchRequestErr(err));
-      dispatch(setSnackBar({ type: 'error', msg: err.response.data.message }));
-    });
+export const clearTodos = () => {
+  return {
+    type: types.CLEAR_TODOS
+  };
 };

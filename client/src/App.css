@@ -3,6 +3,8 @@
 .App {
   text-align: center;
   font-family: 'Poppins';
+  display: flex;
+  flex-direction: column;
   height: 100vh;
 }
 

@@ -1,32 +1,31 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { Button, makeStyles } from '@material-ui/core';
-import AuthLinks from '../auth/AuthLinks';
 
-const useStyles = makeStyles(() => ({
+import { Link } from 'react-router-dom';
+import { Button, makeStyles, Grid } from '@material-ui/core';
+
+import AuthLinks from '../components/auth-links/AuthLinks';
+
+const useStyles = makeStyles((theme) => ({
   navbar: {
     height: '80px',
     width: '100%',
     position: 'fixed',
     top: 0,
     left: 0,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
     background: 'white',
     boxShadow: '0 0 8px 3px rgba(0,0,0,0.2)',
-    zIndex: 999
+    zIndex: 999,
+    padding: '0 16px',
+    [theme.breakpoints.down('md')]: {
+      padding: '0 8px'
+    }
   },
   navLinks: {
     '& > a': {
-      margin: '0 1rem'
+      margin: '0 0.3rem'
     }
   },
   authLinks: {
-    marginRight: '1.5rem',
-    display: 'flex',
-    justifyContent: 'flex-end',
-    flex: 1,
     '& > a': {
       textDecoration: 'none',
       color: 'black'
@@ -38,38 +37,49 @@ const Navbar = () => {
   const classes = useStyles();
 
   return (
-    <div className={classes.navbar}>
-      <div className={classes.navLinks}>
-        <Link to="/">
-          <Button
-            style={{
-              textDecoration: 'none',
-              border: '2px black solid',
-              height: '48px',
-              width: '80px'
-            }}
-          >
-            Home
-          </Button>
-        </Link>
-        <Link to="/demo">
-          <Button
-            style={{
-              background: 'black',
-              color: 'white',
-              textDecoration: 'none',
-              height: '48px',
-              width: '80px'
-            }}
-          >
-            Demo
-          </Button>
-        </Link>
-      </div>
-      <div className={classes.authLinks}>
+    <Grid
+      container
+      alignItems="center"
+      justify="space-between"
+      className={classes.navbar}
+    >
+      <Grid item className={classes.navLinks}>
+        <Grid container spacing={2}>
+          <Grid item xs={6}>
+            <Link to="/">
+              <Button
+                style={{
+                  textDecoration: 'none',
+                  border: '2px black solid',
+                  height: '48px',
+                  width: '80px'
+                }}
+              >
+                Home
+              </Button>
+            </Link>
+          </Grid>
+          <Grid item xs={6}>
+            <Link to="/demo">
+              <Button
+                style={{
+                  background: 'black',
+                  color: 'white',
+                  textDecoration: 'none',
+                  height: '48px',
+                  width: '80px'
+                }}
+              >
+                Demo
+              </Button>
+            </Link>
+          </Grid>
+        </Grid>
+      </Grid>
+      <Grid item className={classes.authLinks}>
         <AuthLinks />
-      </div>
-    </div>
+      </Grid>
+    </Grid>
   );
 };
 

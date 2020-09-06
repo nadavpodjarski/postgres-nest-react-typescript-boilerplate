@@ -1,11 +1,11 @@
 import * as types from './types';
 import { UserCreds } from '../../../types';
 import { Dispatch } from 'react';
-import axios from 'axios';
 
 import { setSnackBar } from '../ui/actions';
-import { setFake } from '../../fake/fakeActions';
-import { resetTodos } from '../todo/actions';
+
+import * as authAPI from '../../../api/auth';
+import * as utils from '../../../utils';
 
 const createGetProfile = () => {
   return {
@@ -46,88 +46,59 @@ const getProfileSuccess = (data: any) => {
   };
 };
 
-const catchAuthRequestErr = (data: any) => {
-  return {
+const catchAuthRequestErr = (err: any) => (dispatch: Dispatch<any>) => {
+  dispatch({
     type: types.AUTH_REQUEST_FAILURE,
-    payload: data
-  };
+    payload: err.message
+  });
+  console.log(err);
+  dispatch(setSnackBar({ type: 'error', msg: err.message }));
 };
 
-export const login = (creds: UserCreds) => (dispatch: Dispatch<any>) => {
-  dispatch(createLogin());
-
-  axios({
-    method: 'POST',
-    url: '/api/login',
-    data: creds
-  })
-    .then((res) => {
-      localStorage.setItem(
-        process.env.REACT_APP_LOCAL_TOKEN as string,
-        res.data.token
-      );
-      axios.defaults.headers.common[
-        'Autorization'
-      ] = `Bearer ${res.data.token}`;
-      dispatch(loginSuccess(res.data));
-    })
-    .catch((err) => {
-      dispatch(catchAuthRequestErr(err.response.data));
-      dispatch(setSnackBar({ type: 'error', msg: err.response.data.message }));
-    });
-};
-
-export const register = (creds: UserCreds) => (dispatch: Dispatch<any>) => {
-  dispatch(createRegister());
-
-  axios({
-    method: 'POST',
-    url: '/api/register',
-    data: creds
-  })
-    .then((res) => {
-      axios.defaults.headers.common[
-        'Autorization'
-      ] = `Bearer ${res.data.token}`;
-      localStorage.setItem(
-        process.env.REACT_APP_LOCAL_TOKEN as string,
-        res.data.token
-      );
-      dispatch(registerSuccess(res.data));
-    })
-    .catch((err) => {
-      dispatch(catchAuthRequestErr(err.response.data));
-      dispatch(setSnackBar({ type: 'error', msg: err.response.data.message }));
-    });
-};
-
-export const getProfile = () => (dispatch: Dispatch<any>) => {
-  const token = localStorage.getItem(
-    process.env.REACT_APP_LOCAL_TOKEN as string
-  );
-
-  if (token) {
-    axios.defaults.headers.common['Autorization'] = `Bearer ${token}`;
-    dispatch(createGetProfile());
-    axios({
-      method: 'GET',
-      url: '/api/profile',
-      headers: {
-        Autorization: `Bearer ${token}`
-      }
-    })
-      .then((res) => {
-        dispatch(getProfileSuccess(res.data));
-      })
-      .catch((err) => {
-        console.error(err.response.data.message);
-      });
-  } else {
-    dispatch(setFake());
+export const login = (creds: UserCreds, history: any) => async (
+  dispatch: Dispatch<any>
+) => {
+  try {
+    dispatch(createLogin());
+    const res = await authAPI.loginUser(creds);
+    dispatch(loginSuccess(res.data));
+    history.push('/demo');
+  } catch (err) {
+    dispatch(catchAuthRequestErr(err));
   }
 };
 
-export const logout = () => (dispatch: Dispatch<any>) => {
+export const register = (creds: UserCreds, history: any) => async (
+  dispatch: Dispatch<any>
+) => {
+  try {
+    dispatch(createRegister());
+    const res = await authAPI.registerUser(creds);
+    dispatch(registerSuccess(res.data));
+    history.push('/demo');
+  } catch (err) {
+    dispatch(catchAuthRequestErr(err));
+  }
+};
+
+export const getProfile = (history: any) => async (dispatch: Dispatch<any>) => {
+  const token = utils.getLocalStorageToken();
+
+  if (token) {
+    try {
+      dispatch(createGetProfile());
+      const res = await authAPI.getProfile(token);
+      dispatch(getProfileSuccess(res.data));
+      history.push('/demo');
+    } catch (err) {
+      dispatch(catchAuthRequestErr(err));
+    }
+  } else {
+    dispatch(userLoggedOut());
+  }
+};
+
+export const userLoggedOut = () => (dispatch: Dispatch<any>) => {
   localStorage.removeItem(process.env.REACT_APP_LOCAL_TOKEN as string);
   dispatch({
     type: types.LOGOUT

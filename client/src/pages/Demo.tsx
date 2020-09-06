@@ -30,23 +30,34 @@ const useStyles = makeStyles((theme: Theme) => ({
     alignItems: 'center'
   },
   demoWrapper: {
-    height: 'calc(100vh - 80px)',
     display: 'flex',
-    flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
     fontSize: '1.rem',
     fontWeight: 'bold',
-    paddingTop: '80px'
+    height: '100%',
+    flexDirection: 'column'
   },
   todoListWrapper: {
-    width: '50%',
-    height: '100%',
+    width: '100%',
+    maxWidth: '1200px',
     display: 'flex',
     flexDirection: 'column',
+    flex: 1,
+    overflowY: 'auto',
+    padding: '16px',
+
     [theme.breakpoints.down('md')]: {
-      width: ' 90%'
+      width: ' 90%',
+      padding: '0 6px 6px 6px'
     }
+  },
+  userLabel: {
+    height: '100px',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+    fontSize: '2rem'
   }
 }));
 
@@ -59,26 +70,29 @@ const header = [
 const Demo = () => {
   const [newTodo, setNewTodo] = useState<string>('');
 
+  const dispatch = useDispatch();
+
   const classes = useStyles();
 
-  const dispatch = useDispatch();
   const todoState = useSelector((state: IStore) => state.todo);
   const authState = useSelector((state: IStore) => state.auth);
 
   useEffect(() => {
     dispatch(todoActions.getAllTodos());
     return () => {
-      dispatch(todoActions.resetTodos());
+      dispatch(todoActions.clearTodos());
     };
-  }, [authState.isFakeData, authState.isLoggedIn]);
+  }, []);
 
-  const onDeleteTodo = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const onDeleteTodoHandler = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
     return (todoId: string) => {
       dispatch(todoActions.deleteTodo(todoId));
     };
   };
 
-  const onAddTodo = (e: React.FormEvent) => {
+  const onAddTodoHandler = (e: React.FormEvent) => {
     e.preventDefault();
     if (newTodo.trim()) {
       dispatch(todoActions.addTodo(newTodo));
@@ -86,7 +100,9 @@ const Demo = () => {
     }
   };
 
-  const onCompleteTodo = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onCompleteTodoHandler = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     return (checked: boolean) => {
       return (id: string) => {
         dispatch(todoActions.completeTodo(id, checked));
@@ -94,7 +110,7 @@ const Demo = () => {
     };
   };
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const content = e.target.value;
     setNewTodo(content);
   };
@@ -102,55 +118,35 @@ const Demo = () => {
   return (
     <>
       <div className={classes.demoWrapper}>
+        <div style={{ height: '64px' }} />
         <div className={classes.todoListWrapper}>
+          <div className={classes.userLabel}>
+            {authState.currentUser?.email &&
+              `Hi, ${authState.currentUser?.email}`}
+          </div>
           <div className={classes.title}>Your Todo List</div>
           <div className={classes.formWrapper}>
-            <form className={classes.form} onSubmit={onAddTodo}>
+            <form className={classes.form} onSubmit={onAddTodoHandler}>
               <TextField
                 variant="outlined"
                 style={{ marginBottom: '1rem' }}
                 value={newTodo}
-                onChange={onChange}
+                onChange={onChangeHandler}
               />
               <AddButton />
             </form>
           </div>
-
           <TodosTable
             isLoading={todoState.isLoading}
-            /**
-             *
-             */
             header={header}
-            /**
-             *
-             */
             data={todoState.todos}
-            /**
-             *
-             */
             stickyHeader={true}
-            /**
-             *
-             */
             placeHolder="Nothing to do"
-            /**
-             *
-             */
             headerStyle={{ background: 'black' }}
-            /**
-             *
-             */
             rowStyle={{ color: 'black', fontSize: '1.5rem' }}
-            /**
-             *
-             */
-            onDeleteTodo={(e, todoId) => onDeleteTodo(e)(todoId)}
-            /**
-             *
-             */
+            onDeleteTodo={(e, todoId) => onDeleteTodoHandler(e)(todoId)}
             onCompleteTodo={(e, checked, todoId) =>
-              onCompleteTodo(e)(checked)(todoId)
+              onCompleteTodoHandler(e)(checked)(todoId)
             }
           />
         </div>

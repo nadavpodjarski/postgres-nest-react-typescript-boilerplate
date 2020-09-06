@@ -27,9 +27,9 @@ export class TodoEntity {
   })
   completed: boolean;
 
-  // @ManyToOne(
-  //   type => UserEntity,
-  //   author => author.todos,
-  // )
-  // author: UserEntity;
+  @ManyToOne(
+    type => UserEntity,
+    author => author.todos,
+  )
+  author: UserEntity;
 }

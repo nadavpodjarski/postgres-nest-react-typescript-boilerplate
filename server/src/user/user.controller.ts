@@ -7,14 +7,8 @@ import { AuthGuard } from 'src/shared/auth.guard';
 export class UserController {
   constructor(private userService: UserService) {}
 
-  @Get('users')
-  getAllUsers() {
-    return this.userService.getAllUsers();
-  }
-
   @Post('login')
   login(@Body() data: UserDTO) {
-    console.log(data);
     return this.userService.login(data);
   }
 

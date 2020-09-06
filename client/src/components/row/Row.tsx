@@ -20,8 +20,6 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-//
-//
 const Row: FC<{
   data: Todo;
   rowStyle?: RowStyle;
@@ -45,25 +43,13 @@ const Row: FC<{
       tabIndex={-1}
       key={`${data.id}_${content}`}
     >
-      {/**
-       *
-       *
-       */}
       <TableCell className={classes.contentTableCell}>
         <div className={classes.content}>{content}</div>
         <div className={classes.deleteButtonWrapper}>
           <DeleteButton onClick={(e) => onDeleteTodo(e, data.id)} />
         </div>
       </TableCell>
-      {/**
-       *
-       *
-       */}
       <TableCell>{new Date(createdOn).toLocaleString('eu')}</TableCell>
-      {/**
-       *
-       *
-       */}
       <TableCell style={{ textAlign: 'center' }}>
         <Checkbox
           checked={completed}
@@ -71,10 +57,6 @@ const Row: FC<{
           id="completed"
         />
       </TableCell>
-      {/**
-       *
-       *
-       */}
     </TableRow>
   );
 };

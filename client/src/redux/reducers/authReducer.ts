@@ -1,12 +1,9 @@
 import { IAuth, Action } from '../../types';
 import * as types from '../actions/auth/types';
-import { SET_FAKE } from '../fake/fakeTypes';
 
 const initialState: IAuth = {
-  isFakeData: false,
   isLoading: true,
-  isLoggedIn: false,
-  currentUser: {},
+  currentUser: null,
   err: ''
 };
 
@@ -21,8 +18,6 @@ export const authReducer = (state = initialState, action: Action): IAuth => {
       return {
         ...state,
         isLoading: false,
-        isLoggedIn: true,
-        isFakeData: false,
         currentUser: action.payload
       };
     case types.REGITSER:
@@ -34,9 +29,7 @@ export const authReducer = (state = initialState, action: Action): IAuth => {
       return {
         ...state,
         isLoading: false,
-        isFakeData: false,
-        currentUser: action.payload,
-        isLoggedIn: true
+        currentUser: action.payload
       };
     case types.GET_PROFILE:
       return {
@@ -46,34 +39,22 @@ export const authReducer = (state = initialState, action: Action): IAuth => {
     case types.GET_PROFILE_SUCCESS:
       return {
         ...state,
-        isFakeData: false,
         isLoading: false,
-        isLoggedIn: true,
         err: '',
         currentUser: action.payload
       };
     case types.AUTH_REQUEST_FAILURE:
       return {
         ...state,
-        isFakeData: true,
         isLoading: false,
         err: action.payload
       };
     case types.LOGOUT:
       return {
         ...state,
-        isFakeData: true,
         isLoading: false,
-        isLoggedIn: false,
-        currentUser: {}
+        currentUser: null
       };
-    case SET_FAKE:
-      return {
-        ...state,
-        isFakeData: true,
-        isLoading: false
-      };
-
     default:
       return state;
   }
