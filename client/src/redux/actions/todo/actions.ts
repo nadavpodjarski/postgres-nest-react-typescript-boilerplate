@@ -4,6 +4,9 @@ import axios from 'axios';
 import { Todo } from '../../../types';
 import { setSnackBar } from '../ui/actions';
 
+import { fakeData } from '../../fake/fakeData';
+import * as fakeActions from '../../fake/fakeActions';
+
 const createGetAllTodo = () => {
   return {
     type: types.GET_ALL_TODO
@@ -31,7 +34,7 @@ const createAddTodo = () => {
 const catchRequestErr = (err: any) => {
   return {
     type: types.REQUEST_FAILURE,
-    payload: err
+    payload: err.message
   };
 };
 
@@ -63,30 +66,69 @@ const completeTodoSuccess = (data: any) => {
   };
 };
 
-export const getAllTodos = () => (dispatch: Dispatch<any>) => {
-  //
-  dispatch(createGetAllTodo());
-  //
-  axios({
-    method: 'GET',
-    url: '/api/todo/all'
-  })
-    .then((res) => {
-      dispatch(getAllTodosSuccess(res.data));
+export const resetTodos = () => {
+  return {
+    type: types.RESET
+  };
+};
+
+export const getAllTodos = () => (dispatch: Dispatch<any>, getStore: any) => {
+  const { isLoggedIn, isFakeData } = getStore().auth;
+  /**
+   * FAKE DATA HANDLER
+   */
+  if (isFakeData) {
+    dispatch(fakeActions.getFakeData(fakeData));
+    return;
+  }
+  /**
+   *
+   */
+  if (isLoggedIn) {
+    dispatch(createGetAllTodo());
+    axios({
+      method: 'GET',
+      url: '/api/todo/all'
     })
-    .catch((err) => {
-      dispatch(catchRequestErr(err));
-      dispatch(setSnackBar({ type: 'error', msg: err.response.data.message }));
-    });
+      .then((res) => {
+        dispatch(getAllTodosSuccess(res.data));
+      })
+      .catch((err) => {
+        dispatch(catchRequestErr(err));
+        dispatch(
+          setSnackBar({ type: 'error', msg: err.response.data.message })
+        );
+      });
+  }
 };
 
 export const completeTodo = (id: string, checked: boolean) => (
   dispatch: Dispatch<any>,
   getStore: any
 ) => {
-  //
+  const { isFakeData } = getStore().auth;
+  const todos = getStore().todo.todos as Todo[];
+  const completedTodo = todos.find((todo) => todo.id === id) as NonNullable<
+    Todo
+  >;
+  completedTodo.completed = checked;
+  /**
+   * FAKE DATA HANDLER
+   */
+  if (isFakeData) {
+    dispatch(fakeActions.completeFakeTodo(todos));
+    dispatch(
+      setSnackBar({
+        type: 'info',
+        msg: `${completedTodo.content} was updated`
+      })
+    );
+    return;
+  }
+  /**
+   *
+   */
   dispatch(createCompleteTodo());
-  //
   axios({
     method: 'PATCH',
     url: '/api/todo/update',
@@ -94,15 +136,6 @@ export const completeTodo = (id: string, checked: boolean) => (
     data: { completed: checked }
   })
     .then(() => {
-      //
-      //
-      const todos = getStore().todo.todos as Todo[];
-      const completedTodo = todos.find((todo) => todo.id === id) as NonNullable<
-        Todo
-      >;
-      //
-      //
-      completedTodo.completed = checked;
       dispatch(completeTodoSuccess(todos));
       dispatch(
         setSnackBar({
@@ -118,10 +151,23 @@ export const completeTodo = (id: string, checked: boolean) => (
     });
 };
 
-export const addTodo = (content: string) => (dispatch: Dispatch<any>) => {
-  //
+export const addTodo = (content: string) => (
+  dispatch: Dispatch<any>,
+  getStore: any
+) => {
+  const { isFakeData } = getStore().auth;
+  /**
+   * FAKE DATA HANDLER
+   */
+  if (isFakeData) {
+    dispatch(fakeActions.addFakeTodo(content));
+    dispatch(setSnackBar({ type: 'success', msg: `${content} was added` }));
+    return;
+  }
+  /**
+   *
+   */
   dispatch(createAddTodo());
-  //
   axios({
     method: 'POST',
     url: '/api/todo/create',
@@ -141,23 +187,29 @@ export const deleteTodo = (id: string) => (
   dispatch: Dispatch<any>,
   getStore: any
 ) => {
-  //
+  const { isFakeData } = getStore().auth;
+  const todos = getStore().todo.todos as Todo[];
+  const deletedTodo = todos.find((todo) => todo.id === id) as NonNullable<Todo>;
+  /**
+   * FAKE DATA HANDLER
+   */
+  if (isFakeData) {
+    dispatch(fakeActions.deleteFakeTodo(id));
+    dispatch(
+      setSnackBar({ type: 'info', msg: `${deletedTodo.content} was deleted` })
+    );
+    return;
+  }
+  /**
+   *
+   */
   dispatch(createDeleteTodo());
-  //
   axios({
     method: 'DELETE',
     url: '/api/todo/delete',
     params: { id }
   })
     .then(() => {
-      //
-      //
-      const todos = getStore().todo.todos as Todo[];
-      const deletedTodo = todos.find((todo) => todo.id === id) as NonNullable<
-        Todo
-      >;
-      //
-      //
       dispatch(deleteTodoSuccess(id));
       dispatch(
         setSnackBar({ type: 'info', msg: `${deletedTodo.content} was deleted` })

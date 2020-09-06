@@ -7,7 +7,7 @@ export type UserCreds = {
 
 export type Todo = {
   content: string;
-  createdOn: string;
+  createdOn: Date;
   completed: boolean;
   id: string;
 };
@@ -50,10 +50,11 @@ export interface IUiState {
 }
 
 export interface IAuth {
+  isFakeData: boolean;
   currentUser: any;
   err: any;
   isLoading: boolean;
-  isAuthenticated: boolean;
+  isLoggedIn: boolean;
 }
 
 export interface ITodoTable {

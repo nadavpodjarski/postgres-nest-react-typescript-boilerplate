@@ -66,8 +66,11 @@ const Demo = () => {
   const authState = useSelector((state: IStore) => state.auth);
 
   useEffect(() => {
-    authState.isAuthenticated && dispatch(todoActions.getAllTodos());
-  }, [authState.isAuthenticated]);
+    dispatch(todoActions.getAllTodos());
+    return () => {
+      dispatch(todoActions.resetTodos());
+    };
+  }, [authState.isFakeData, authState.isLoggedIn]);
 
   const onDeleteTodo = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     return (todoId: string) => {

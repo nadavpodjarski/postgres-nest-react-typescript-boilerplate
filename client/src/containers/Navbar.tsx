@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button, makeStyles } from '@material-ui/core';
-import AuthLinks from '../components/AuthLinks';
+import AuthLinks from '../auth/AuthLinks';
 
 const useStyles = makeStyles(() => ({
   navbar: {

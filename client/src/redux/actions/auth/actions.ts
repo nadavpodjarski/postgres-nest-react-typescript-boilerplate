@@ -2,7 +2,10 @@ import * as types from './types';
 import { UserCreds } from '../../../types';
 import { Dispatch } from 'react';
 import axios from 'axios';
+
 import { setSnackBar } from '../ui/actions';
+import { setFake } from '../../fake/fakeActions';
+import { resetTodos } from '../todo/actions';
 
 const createGetProfile = () => {
   return {
@@ -59,14 +62,14 @@ export const login = (creds: UserCreds) => (dispatch: Dispatch<any>) => {
     data: creds
   })
     .then((res) => {
-      axios.defaults.headers.common[
-        'Autorization'
-      ] = `Bearer ${res.data.token}`;
-      dispatch(loginSuccess(res.data));
       localStorage.setItem(
         process.env.REACT_APP_LOCAL_TOKEN as string,
         res.data.token
       );
+      axios.defaults.headers.common[
+        'Autorization'
+      ] = `Bearer ${res.data.token}`;
+      dispatch(loginSuccess(res.data));
     })
     .catch((err) => {
       dispatch(catchAuthRequestErr(err.response.data));
@@ -86,11 +89,11 @@ export const register = (creds: UserCreds) => (dispatch: Dispatch<any>) => {
       axios.defaults.headers.common[
         'Autorization'
       ] = `Bearer ${res.data.token}`;
-      dispatch(registerSuccess(res.data));
       localStorage.setItem(
         process.env.REACT_APP_LOCAL_TOKEN as string,
         res.data.token
       );
+      dispatch(registerSuccess(res.data));
     })
     .catch((err) => {
       dispatch(catchAuthRequestErr(err.response.data));
@@ -108,7 +111,10 @@ export const getProfile = () => (dispatch: Dispatch<any>) => {
     dispatch(createGetProfile());
     axios({
       method: 'GET',
-      url: '/api/profile'
+      url: '/api/profile',
+      headers: {
+        Autorization: `Bearer ${token}`
+      }
     })
       .then((res) => {
         dispatch(getProfileSuccess(res.data));
@@ -116,13 +122,14 @@ export const getProfile = () => (dispatch: Dispatch<any>) => {
       .catch((err) => {
         console.error(err.response.data.message);
       });
+  } else {
+    dispatch(setFake());
   }
 };
 
-export const logout = () => {
-  axios.defaults.headers['Autorization'] = '';
+export const logout = () => (dispatch: Dispatch<any>) => {
   localStorage.removeItem(process.env.REACT_APP_LOCAL_TOKEN as string);
-  return {
+  dispatch({
     type: types.LOGOUT
-  };
+  });
 };

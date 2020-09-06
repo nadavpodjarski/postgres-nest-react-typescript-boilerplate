@@ -14,7 +14,7 @@ export class UserService {
   login = async (data: UserDTO): Promise<UserSO> => {
     const { email, password } = data;
     const user = await this.userRepository.findOne({ email });
-    if (!user || !user.comparePassword(password)) {
+    if (!user || !(await user.comparePassword(password))) {
       throw new HttpException(
         'Invalid email or password',
         HttpStatus.UNAUTHORIZED,

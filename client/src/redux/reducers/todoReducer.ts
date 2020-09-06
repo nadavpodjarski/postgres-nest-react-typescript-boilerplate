@@ -1,4 +1,5 @@
 import * as types from '../actions/todo/types';
+import * as fakeTypes from '../fake/fakeTypes';
 import { ITodoState, Action } from '../../types';
 
 const initialState: ITodoState = {
@@ -62,6 +63,38 @@ export const todoReducer = (
         ...state,
         isLoading: false,
         todos: [...action.payload]
+      };
+    case types.RESET:
+      return {
+        todos: [],
+        isLoading: true,
+        err: ''
+      };
+    /**
+     *
+     * FAKE DATA HANDLER
+     *
+     */
+    case fakeTypes.GET_FAKE_DATA:
+      return {
+        ...state,
+        isLoading: false,
+        todos: action.payload
+      };
+    case fakeTypes.ADD_FAKE_TODO:
+      return {
+        ...state,
+        todos: [action.payload, ...state.todos]
+      };
+    case fakeTypes.COMPLETE_FAKE_TODO:
+      return {
+        ...state,
+        todos: [...action.payload]
+      };
+    case fakeTypes.DELETE_FAKE_TODO:
+      return {
+        ...state,
+        todos: [...state.todos.filter((todo) => todo.id !== action.payload)]
       };
     default:
       return state;

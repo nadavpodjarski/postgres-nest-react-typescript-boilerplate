@@ -4,8 +4,8 @@ import Demo from './pages/Demo';
 import Navbar from './containers/Navbar';
 import { Switch, Route, BrowserRouter } from 'react-router-dom';
 import SnackBar from './components/snackbar/SnackBar';
-import Login from './containers/Login';
-import Register from './containers/Register';
+import Login from './auth/Login';
+import Register from './auth/Register';
 
 import { useDispatch } from 'react-redux';
 import { getProfile } from './redux/actions/auth/actions';
@@ -17,7 +17,7 @@ function App() {
 
   useEffect(() => {
     dispatch(getProfile());
-  });
+  }, []);
 
   return (
     <>

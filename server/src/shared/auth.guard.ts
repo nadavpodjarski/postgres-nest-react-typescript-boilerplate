@@ -25,7 +25,7 @@ export class AuthGuard implements CanActivate {
     }
     try {
       const token = authHeader[1];
-      const decode = verify(token, process.env.SECRET);
+      const decode = await verify(token, process.env.SECRET);
       return decode;
     } catch (err) {
       const message = 'Token error: ' + (err.message || err.name);

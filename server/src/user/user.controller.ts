@@ -14,6 +14,7 @@ export class UserController {
 
   @Post('login')
   login(@Body() data: UserDTO) {
+    console.log(data);
     return this.userService.login(data);
   }
 

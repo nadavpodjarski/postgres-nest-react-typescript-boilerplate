@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { TextField, Button } from '@material-ui/core';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 
 import { useDispatch, useSelector } from 'react-redux';
 import * as authActions from '../redux/actions/auth/actions';
@@ -8,7 +8,6 @@ import { IStore } from '../types';
 
 const Login = () => {
   const dispatch = useDispatch();
-  const history = useHistory();
   const authState = useSelector((state: IStore) => state.auth);
   const [creds, setCreds] = useState({
     email: '',
@@ -21,10 +20,6 @@ const Login = () => {
       password: ''
     });
   }, []);
-
-  useEffect(() => {
-    authState.isAuthenticated && history.push('/demo');
-  }, [authState.isAuthenticated]);
 
   const onChangeHandler = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -42,7 +37,7 @@ const Login = () => {
     dispatch(authActions.login(creds));
   };
 
-  return (
+  return !authState.isLoggedIn ? (
     <div
       style={{
         height: '100%',
@@ -114,6 +109,8 @@ const Login = () => {
         </Button>
       </form>
     </div>
+  ) : (
+    <Redirect to="/demo" />
   );
 };
 

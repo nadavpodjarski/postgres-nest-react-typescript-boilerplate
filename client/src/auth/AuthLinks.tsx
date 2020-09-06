@@ -3,10 +3,13 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { IStore } from '../types';
 import { logout } from '../redux/actions/auth/actions';
+import { usePrivateComponent } from '../hooks/usePrivateComponent';
 
 const AuthLinks = () => {
   const dispatch = useDispatch();
   const authState = useSelector((state: IStore) => state.auth);
+
+  const LogoutPrivateComp = usePrivateComponent();
 
   const logoutHandler = () => {
     dispatch(logout());
@@ -14,18 +17,20 @@ const AuthLinks = () => {
 
   return (
     <>
-      {!authState.isAuthenticated ? (
+      {!authState.isLoggedIn && !authState.isLoading ? (
         <>
           <Link to="/login">Login</Link>
           <span style={{ padding: '0 0.2rem' }}>/</span>
           <Link style={{ fontWeight: 'bold' }} to="/register">
             Register
-          </Link>{' '}
+          </Link>
         </>
       ) : (
-        <Link to="/" onClick={logoutHandler}>
-          Logout
-        </Link>
+        <LogoutPrivateComp>
+          <Link to="/" onClick={logoutHandler}>
+            Logout
+          </Link>
+        </LogoutPrivateComp>
       )}
     </>
   );
